@@ -5,6 +5,10 @@ import 'package:untitled/utils/colors.dart';
 import 'package:untitled/utils/utils.dart';
 import 'package:untitled/widgets/text_field_input.dart';
 
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -22,31 +26,38 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
 
-    void loginUser() async {
-      setState(() {
-        _isLoading = true;
-      });
-      String res = await AuthMethods().loginUser(
-          email: _emailController.text, password: _passwordController.text);
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
 
-      if (res == "success") {
-        //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Homescreen()));
-      } else {
-        showSnackBar(res, context);
-      }
-      setState(() {
-        _isLoading = false;
-      });
-    }
-
-    void navigateToSignup() {
-      Navigator.of(context).push(
+    if (res == "success") {
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const SignupScreen(),
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
         ),
       );
+    } else {
+      showSnackBar(res, context);
     }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void navigateToSignup() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SignupScreen(),
+      ),
+    );
   }
 
   @override
@@ -101,15 +112,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(4),
                       color: blueColor,
                     ),
-                    child: Center(
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Log In',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator(
+                      color: primaryColor,
+                    ))
+                        : const Center(
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Log In',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),

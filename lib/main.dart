@@ -9,18 +9,18 @@ import 'package:untitled/responsive/web_screen_layout.dart';
 import 'package:untitled/screens/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if(kIsWeb){
+  if (kIsWeb) {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: 'AIzaSyAKpvAA3qQaVFNWTBXo4_Y11Cd5vWqK9kw',
-        appId: '1:1009302793012:web:ebd9e1fad59aac16e39361',
-        messagingSenderId: '1009302793012',
-        projectId: 'chatapp-404f3',
-        storageBucket: "chatapp-404f3.appspot.com",)
-    );
-  } else{
+        options: FirebaseOptions(
+      apiKey: 'AIzaSyAKpvAA3qQaVFNWTBXo4_Y11Cd5vWqK9kw',
+      appId: '1:1009302793012:web:ebd9e1fad59aac16e39361',
+      messagingSenderId: '1009302793012',
+      projectId: 'chatapp-404f3',
+      storageBucket: "chatapp-404f3.appspot.com",
+    ));
+  } else {
     await Firebase.initializeApp();
   }
 
@@ -33,37 +33,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Instagram Clone',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
-      ),
-
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.active){
-            if(snapshot.hasData){
-              return const ResponsiveLayout(
-                    mobileScreenLayout: MobileScreenLayout(),
-                    webScreenLayout: WebScreenLayout(),
-              );
-            }else if (snapshot.hasError){
-              return Center(child: Text('${snapshot.error}'));
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram Clone',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor,
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(child: Text('${snapshot.error}'));
+              }
             }
-          }
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(
-              child: CircularProgressIndicator(
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child: CircularProgressIndicator(
                 color: primaryColor,
-              )
-            );
-          }
+              ));
+            }
 
-          return const LoginScreen();
-
-        },
-      )
-    );
+            return const LoginScreen();
+          },
+        ));
   }
 }
