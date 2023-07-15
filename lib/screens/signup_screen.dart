@@ -35,7 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
     _usernameController.dispose();
   }
 
-  void selectImage() async{
+  void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
@@ -47,30 +47,28 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = true;
     });
     String res = await AuthMethods().signUpUser(
-    email: _emailController.text,
-    password: _passwordController.text,
-    username: _usernameController.text,
-    bio: _bioController.text,
-    file: _image!,
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _image!,
     );
 
+    if (res != 'success') {
+      showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
+    }
     setState(() {
       _isLoading = false;
     });
-
-    if(res !='success'){
-      showSnackBar(res, context);
-    }else{
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const ResponsiveLayout(
-              mobileScreenLayout: MobileScreenLayout(),
-              webScreenLayout: WebScreenLayout(),
-            ),
-          ),
-      );
-    }
-
   }
 
   void navigateToLogin() {
@@ -91,36 +89,43 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(child:Container(), flex:1,),
+              Flexible(
+                child: Container(),
+                flex: 1,
+              ),
               //image
-              Image(image: AssetImage('assets/logo_helphand.png'), color: primaryColor, height: 64,),
-
+              Image(
+                image: AssetImage('assets/logo_helphand.png'),
+                color: primaryColor,
+                height: 64,
+              ),
 
               //circular widget to accept and show our selected file
               Stack(
                 children: [
-                _image!=null?CircleAvatar(
-                  radius: 64,
-                  backgroundImage: MemoryImage(_image!),
-                  backgroundColor: Colors.white,
-                )
-                : const CircleAvatar(
-                    radius: 64,
-                    backgroundImage: AssetImage('assets/wavinghand.png'),
-                    backgroundColor: Colors.white,
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 80,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: const Icon(Icons.add_a_photo,
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundImage: MemoryImage(_image!),
+                          backgroundColor: Colors.white,
+                        )
+                      : const CircleAvatar(
+                          radius: 64,
+                          backgroundImage: AssetImage('assets/wavinghand.png'),
+                          backgroundColor: Colors.white,
                         ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   left: 80,
+                  //   child: CircleAvatar(
+                  //     backgroundColor: Colors.white,
+                  //     child: IconButton(
+                  //       onPressed: selectImage,
+                  //       icon: const Icon(Icons.add_a_photo,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(height: 24),
@@ -175,15 +180,20 @@ class _SignupScreenState extends State<SignupScreen> {
                       borderRadius: BorderRadius.circular(4),
                       color: blueColor,
                     ),
-                    child:Center(
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Sign up',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ))
+                        : Center(
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Sign up',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -191,7 +201,10 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 12,
               ),
-              Flexible(child:Container(), flex:1,),
+              Flexible(
+                child: Container(),
+                flex: 1,
+              ),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -218,7 +231,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),
