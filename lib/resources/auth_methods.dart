@@ -2,12 +2,23 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/models/user.dart' as model;
 import 'package:untitled/resources/storage_methods.dart';
+
+import '../providers/user_provider.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<model.User> getUserDetails() async{
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot snap = await _firestore.collection('users').doc(currentUser.uid).get();
+
+    return model.User.fromSnap(snap);
+  }
 
   //sign up user
   Future<String> signUpUser({
@@ -61,18 +72,17 @@ class AuthMethods {
       } else {
         res = "Please enter all the fields";
       }
-    }
-    // on FirebaseAuthException catch (e){
-    //   if(e.code == 'wrong-password'){
-    //
-    //   }else if(e.code == 'user-not-found'){
-    //
-    //   }
-    // }
-    catch (err) {
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        res = 'Invalid password';
+      } else if (e.code == 'user-not-found') {
+        res = 'User not found';
+      }
+    } catch (err) {
       res = err.toString();
     }
 
-    return res; // Return the result at the end of the method
+    return res;
   }
+
 }
