@@ -6,17 +6,17 @@ class Post {
   final String username;
   final String postId;
   final datePublished;
-  final String postUrl;
-  final String profImage;
+  //final String postUrl;
+  //final String profImage;
   final likes;
 
   const Post({
     required this.description,
     required this.uid,
-    required this.postUrl,
+    //required this.postUrl,
     required this.username,
     required this.postId,
-    required this.profImage,
+    //required this.profImage,
     required this.likes,
     required this.datePublished,
   });
@@ -25,9 +25,9 @@ class Post {
     "username": username,
     "uid": uid,
     "description": description,
-    "postUrl": postUrl,
+    //"postUrl": postUrl,
     "postId": postId,
-    "profImage": profImage,
+    //"profImage": profImage,
     "likes": likes,
     "datePublished": datePublished,
   };
@@ -39,9 +39,9 @@ class Post {
       username: snapshot['username'],
       uid: snapshot['uid'],
       description: snapshot['description'],
-      postUrl: snapshot['postUrl'],
+      //postUrl: snapshot['postUrl'],
       postId: snapshot['postId'],
-      profImage: snapshot['profImage'],
+      //profImage: snapshot['profImage'],
       likes: snapshot['likes'],
       datePublished: snapshot['datePublished']
     );

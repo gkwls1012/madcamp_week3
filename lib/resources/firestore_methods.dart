@@ -12,15 +12,15 @@ class FirestoreMethods {
   //upload post
   Future<String> uploadPost(
       String description,
-      Uint8List file,
+      //Uint8List file,
       String uid,
       String username,
-      String profImage,
+      //String profImage,
       ) async {
     String res = "some error occurred";
     try {
-      String photoUrl =
-      await StorageMethods().uploadImageToStorage('posts', file, true);
+      //String photoUrl =
+      //await StorageMethods().uploadImageToStorage('posts', file, true);
 
       String postId = const Uuid().v1();
       Post post = Post(
@@ -29,8 +29,8 @@ class FirestoreMethods {
         username: username,
         postId: postId,
         datePublished: DateTime.now(),
-        postUrl: photoUrl,
-        profImage: profImage,
+        //postUrl: photoUrl,
+        //profImage: profImage,
         likes: [],
       );
 

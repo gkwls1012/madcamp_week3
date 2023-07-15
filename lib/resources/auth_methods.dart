@@ -12,10 +12,11 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<model.User> getUserDetails() async{
+  Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
 
-    DocumentSnapshot snap = await _firestore.collection('users').doc(currentUser.uid).get();
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
 
     return model.User.fromSnap(snap);
   }
@@ -26,7 +27,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String bio,
-    required Uint8List file,
+    //required Uint8List file,
   }) async {
     String res = "Some error occurred";
     try {
@@ -39,11 +40,20 @@ class AuthMethods {
             email: email, password: password);
 
         print(cred.user!.uid);
-        String photoUrl = await StorageMethods().uploadImageToStorage('profilePics', file, false);
+        //String photoUrl = await StorageMethods().uploadImageToStorage('profilePics', file, false);
 
-        model.User user = model.User(email: email, uid: cred.user!.uid, photoUrl: photoUrl, username: username, bio: bio, followers: [], following: []);
+        model.User user = model.User(
+            email: email,
+            uid: cred.user!.uid,
+            //photoUrl: photoUrl,
+            username: username,
+            bio: bio,
+            followers: [],
+            following: []);
         //add user to our database
-        await _firestore.collection('users').doc(cred.user!.uid).set(user.toJson(),);
+        await _firestore.collection('users').doc(cred.user!.uid).set(
+              user.toJson(),
+            );
         res = "success";
       }
     } on FirebaseAuthException catch (err) {
@@ -84,5 +94,4 @@ class AuthMethods {
 
     return res;
   }
-
 }

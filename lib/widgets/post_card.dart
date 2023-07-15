@@ -19,11 +19,13 @@ class PostCard extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
+                /*
                 CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(snap['profImage'],),
                   backgroundColor: Colors.white,
                 ),
+                 */
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
@@ -71,6 +73,7 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
+          /*
           //Image Section
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
@@ -79,7 +82,7 @@ class PostCard extends StatelessWidget {
               snap['postUrl'], fit: BoxFit.cover,
             ),
           ),
-
+*/
 
           //Description and number of comments
           Container(

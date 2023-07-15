@@ -25,14 +25,19 @@ class _AddState extends State<Add> {
   void postImage(
     String uid,
     String username,
-    String profImage,
+    //String profImage,
   ) async {
     setState(() {
       _isLoading = true;
     });
     try {
       String res = await FirestoreMethods().uploadPost(
-          _descriptionController.text, _file!, uid, username, profImage);
+          _descriptionController.text,
+        //_file!,
+        uid,
+        username,
+          //profImage
+      );
 
       if (res == "success") {
         showSnackBar('Posted!', context);
@@ -95,7 +100,7 @@ class _AddState extends State<Add> {
 
   String uid = "";
   String username = "";
-  String photoUrl = "";
+  //String photoUrl = "";
 
   @override
   void initState() {
@@ -112,7 +117,7 @@ class _AddState extends State<Add> {
     setState(() {
       username = (snap.data() as Map<String, dynamic>)['username'];
       uid = (snap.data() as Map<String, dynamic>)['uid'];
-      photoUrl = (snap.data() as Map<String, dynamic>)['photoUrl'];
+      //photoUrl = (snap.data() as Map<String, dynamic>)['photoUrl'];
     });
   }
 
@@ -124,57 +129,52 @@ class _AddState extends State<Add> {
 
   @override
   Widget build(BuildContext context) {
-    return _file == null
-        ? Center(
-            child: IconButton(
-                onPressed: () => _selectImage(context),
-                icon: const Icon(Icons.upload)))
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => {},
-              ),
-              title: const Text('Post to'),
-              centerTitle: false,
-              actions: [
-                TextButton(
-                  onPressed: () => postImage(uid, username, photoUrl),
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          color: primaryColor,
-                        ))
-                      : const Text(
-                          'Post',
-                          style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                ),
-              ],
-            ),
-            body: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          hintText: "write here...",
-                          border: InputBorder.none,
-                        ),
-                        maxLines: 12,
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mobileBackgroundColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => {},
+        ),
+        title: const Text('Post to'),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () => postImage(uid, username),
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: primaryColor,
+                  ))
+                : const Text(
+                    'Post',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
+                  ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    hintText: "write here...",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: 12,
+                ),
+              ),
+              /*
                     SizedBox(
                       height: 90,
                       width: 90,
@@ -191,11 +191,13 @@ class _AddState extends State<Add> {
                         ),
                       ),
                     ),
-                    const Divider(),
-                  ],
-                ),
-              ],
-            ),
-          );
+                    */
+
+              const Divider(),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
       password: _passwordController.text,
       username: _usernameController.text,
       bio: _bioController.text,
-      file: _image!,
+      //file: _image!,
     );
 
     if (res != 'success') {
@@ -99,9 +99,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 color: primaryColor,
                 height: 64,
               ),
-
+/*
               //circular widget to accept and show our selected file
               Stack(
+
                 children: [
                   _image != null
                       ? CircleAvatar(
@@ -114,20 +115,21 @@ class _SignupScreenState extends State<SignupScreen> {
                           backgroundImage: AssetImage('assets/wavinghand.png'),
                           backgroundColor: Colors.white,
                         ),
-                  // Positioned(
-                  //   bottom: 0,
-                  //   left: 80,
-                  //   child: CircleAvatar(
-                  //     backgroundColor: Colors.white,
-                  //     child: IconButton(
-                  //       onPressed: selectImage,
-                  //       icon: const Icon(Icons.add_a_photo,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Positioned(
+                    bottom: 0,
+                    left: 80,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(Icons.add_a_photo,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
+  */
               const SizedBox(height: 24),
               //text field input for username
               TextFieldInput(
