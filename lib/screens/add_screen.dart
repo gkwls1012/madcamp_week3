@@ -19,24 +19,22 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   bool _isLoading = false;
-  Uint8List? _file;
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   void postImage(
     String uid,
     String username,
-    //String profImage,
   ) async {
     setState(() {
       _isLoading = true;
     });
     try {
       String res = await FirestoreMethods().uploadPost(
+        _titleController.text,
           _descriptionController.text,
-        //_file!,
         uid,
         username,
-          //profImage
       );
 
       if (res == "success") {
@@ -52,55 +50,9 @@ class _AddState extends State<Add> {
     });
   }
 
-  _selectImage(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: const Text('Create a Post'),
-          children: [
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Take a photo'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List? file = await pickImage(ImageSource.camera);
-                if (file != null) {
-                  setState(() {
-                    _file = file;
-                  });
-                }
-              },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Choose from gallery'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List? file = await pickImage(ImageSource.gallery);
-                if (file != null) {
-                  setState(() {
-                    _file = file;
-                  });
-                }
-              },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   String uid = "";
   String username = "";
-  //String photoUrl = "";
 
   @override
   void initState() {
@@ -117,13 +69,13 @@ class _AddState extends State<Add> {
     setState(() {
       username = (snap.data() as Map<String, dynamic>)['username'];
       uid = (snap.data() as Map<String, dynamic>)['uid'];
-      //photoUrl = (snap.data() as Map<String, dynamic>)['photoUrl'];
     });
   }
 
   @override
   void dispose() {
     super.dispose();
+    _titleController.dispose();
     _descriptionController.dispose();
   }
 
@@ -132,24 +84,27 @@ class _AddState extends State<Add> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => {},
+        title: Row(
+          children: [
+            Image(
+              image: AssetImage('assets/logo_helphand.png'),
+              height: 40,
+              color: primaryColor,
+            ),
+          ],
         ),
-        title: const Text('Post to'),
-        centerTitle: false,
         actions: [
           TextButton(
             onPressed: () => postImage(uid, username),
             child: _isLoading
                 ? const Center(
                     child: CircularProgressIndicator(
-                    color: primaryColor,
+                    color: Colors.white,
                   ))
                 : const Text(
                     'Post',
                     style: TextStyle(
-                      color: Colors.blueAccent,
+                      color: blueColor1,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -157,46 +112,71 @@ class _AddState extends State<Add> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    hintText: "write here...",
-                    border: InputBorder.none,
-                  ),
-                  maxLines: 12,
-                ),
-              ),
-              /*
-                    SizedBox(
-                      height: 90,
-                      width: 90,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: MemoryImage(_file!),
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    */
-
-              const Divider(),
-            ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [secondaryColor, primaryColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-        ],
+        ),
+        child: Column(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: Center(
+                    child: Text(
+                      username + '님! 새로운 도움을 요청해보세요',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                        hintText: "   제목",
+                        border: InputBorder.none,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                  child: TextField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      hintText: "   내용을 적어주세요",
+                      border: InputBorder.none,
+                    ),
+                    maxLines: 12,
+                  ),),
+                ),
+
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

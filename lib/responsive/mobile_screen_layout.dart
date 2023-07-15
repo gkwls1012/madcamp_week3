@@ -65,37 +65,39 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         controller: pageController,
         onPageChanged: onPageChanged,
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: mobileBackgroundColor,
-          items: [
+      bottomNavigationBar: Container(
+        height: 60,
+        child: CupertinoTabBar(
+          backgroundColor: mobileBackgroundColor,
+            items: [
+                BottomNavigationBarItem(
+                icon: Icon(Icons.home, color: _page==0? Colors.black : primaryColor ,),
+                label: '',
+                ),
               BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: _page==0? primaryColor: secondaryColor,),
+              icon: Icon(Icons.search, color: _page==1? Colors.black: primaryColor,),
               label: '',
               backgroundColor: primaryColor,
               ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: _page==1? primaryColor: secondaryColor,),
-            label: '',
-            backgroundColor: primaryColor,
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, color: _page==2? primaryColor: secondaryColor,),
-            label: '',
-            backgroundColor: primaryColor,
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble, color: _page==3? primaryColor: secondaryColor,),
-            label: '',
-            backgroundColor: primaryColor,
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.person,color: _page==4? primaryColor: secondaryColor,),
-            label: '',
-            backgroundColor: primaryColor,
-            ),
-            ],
-        onTap: navigationTapped,
+              BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle, color: _page==2? Colors.black: primaryColor,),
+              label: '',
+              backgroundColor: primaryColor,
+              ),
+              BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble, color: _page==3? Colors.black: primaryColor,),
+              label: '',
+              backgroundColor: primaryColor,
+              ),
+              BottomNavigationBarItem(
+              icon: Icon(Icons.person,color: _page==4? Colors.black: primaryColor,),
+              label: '',
+              backgroundColor: primaryColor,
+              ),
+              ],
+          onTap: navigationTapped,
 
+        ),
       ),
             );
           }

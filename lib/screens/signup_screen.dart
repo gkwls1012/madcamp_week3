@@ -180,12 +180,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color: blueColor,
+                      color: blueColor2,
                     ),
                     child: _isLoading
                         ? const Center(
                             child: CircularProgressIndicator(
-                            color: primaryColor,
+                            color: Colors.white,
                           ))
                         : Center(
                             child: const Padding(

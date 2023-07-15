@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
+import 'package:intl/intl.dart';
+
 
 class PostCard extends StatelessWidget {
   final snap;
@@ -7,170 +10,118 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: mobileBackgroundColor,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 4,
-              horizontal: 16,
-            ).copyWith(right: 0),
-            child: Row(
-              children: [
-                /*
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(snap['profImage'],),
-                  backgroundColor: Colors.white,
-                ),
-                 */
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          snap['username'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
+    Timestamp timestamp = snap['datePublished'];
+    DateTime dateTime = timestamp.toDate();
+    String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
+    var date = dateString;
+    return Card(
+      color: Colors.white.withOpacity(0.8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 16,
+              ).copyWith(right: 0),
+              child: Row(
+                children: [
+                  Image(
+                    image: AssetImage('assets/wavinghand.png'),
+                    width: 25,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                              Text(
+                      snap['title'],
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
                           child: ListView(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                        ),
-                        shrinkWrap: true,
-                        children: [
-                          'Delete',
-                        ]
-                            .map(
-                              (e) => InkWell(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shrinkWrap: true,
+                            children: [
+                              'Delete',
+                            ]
+                                .map(
+                                  (e) => InkWell(
                                 onTap: () {},
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 16),
+                                    vertical: 12,
+                                    horizontal: 16,
+                                  ),
                                   child: Text(e),
                                 ),
                               ),
                             )
-                            .toList(),
-                      )),
-                    );
-                  },
-                  icon: const Icon(Icons.more_vert),
-                ),
-              ],
-            ),
-          ),
-          /*
-          //Image Section
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
-            child: Image.network(
-              snap['postUrl'], fit: BoxFit.cover,
-            ),
-          ),
-*/
-
-          //Description and number of comments
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Number of likes
-                DefaultTextStyle(
-                  style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w800,),
-                  child: Text('1234 likes',
-                      style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: primaryColor),
-                      children: [
-                        TextSpan(
-                          text: 'username',
-                          style: const TextStyle(fontWeight: FontWeight.bold,),
+                                .toList(),
+                          ),
                         ),
-                        TextSpan(
-                          text: '   kkkkkkkkkkkkkkkkkkkkkkkkkkkk',
-                        ),
-                      ],
+                      );
+                    },
+                    icon: const Icon(Icons.more_vert),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            //Description and number of comments
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: snap['description'],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
+
+                  Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      'View all 200 comments',
-                      style: const TextStyle(fontSize: 16, color: secondaryColor),
+                      snap['username']+'이  '+date+'에 요청한 도움',
+                      style: const TextStyle(fontSize: 14, color: primaryColor),
                     ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(
-                    '23/18/15',
-                    style: const TextStyle(fontSize: 16, color: secondaryColor),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          //LIKE COMMENT SECTION
-          Row(
-            children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.comment_outlined,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.send,
-                  )),
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: IconButton(
-                        icon: const Icon(Icons.bookmark_border),
-                        onPressed: () {},
-                      )))
-            ],
-          ),
-
-        ],
+          ],
+        ),
       ),
     );
   }

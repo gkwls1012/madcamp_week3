@@ -13,32 +13,39 @@ class FeedScreen extends StatelessWidget {
         backgroundColor: mobileBackgroundColor,
         centerTitle: false,
         title: Container(
-          margin: const EdgeInsets.only(top: 20),
+          //margin: const EdgeInsets.only(top: 20),
           child: Image(
-            image: AssetImage('assets/logo_helphand.png'),
-            height: 40,
-            color: primaryColor,
+                image: AssetImage('assets/logo_helphand.png'),
+                height: 40,
+                color: primaryColor,
+              ),
           ),
         ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.messenger_outline_outlined))
-        ],
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String,dynamic>>> snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center(
-              child: CircularProgressIndicator(),
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [secondaryColor, primaryColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot<Map<String,dynamic>>> snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) => PostCard(
+                snap: snapshot.data!.docs[index].data()
+              ),
             );
           }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => PostCard(
-              snap: snapshot.data!.docs[index].data()
-            ),
-          );
-        }
+        ),
       ),
     );
   }

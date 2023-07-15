@@ -11,11 +11,10 @@ class FirestoreMethods {
 
   //upload post
   Future<String> uploadPost(
+      String title,
       String description,
-      //Uint8List file,
       String uid,
       String username,
-      //String profImage,
       ) async {
     String res = "some error occurred";
     try {
@@ -24,13 +23,12 @@ class FirestoreMethods {
 
       String postId = const Uuid().v1();
       Post post = Post(
+        title: title,
         description: description,
         uid: uid,
         username: username,
         postId: postId,
         datePublished: DateTime.now(),
-        //postUrl: photoUrl,
-        //profImage: profImage,
         likes: [],
       );
 

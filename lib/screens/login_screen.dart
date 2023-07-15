@@ -78,10 +78,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 1,
               ),
               //image
-              Image(
-                image: AssetImage('assets/logo_helphand.png'),
-                color: primaryColor,
-                height: 64,
+              Row(
+                children: [
+                  Image(
+                    image: AssetImage('assets/wavinghand.png'),
+                    color: primaryColor,
+                    height: 64,
+                  ),
+                  Image(
+                    image: AssetImage('assets/logo_helphand.png'),
+                    color: primaryColor,
+                    height: 64,
+                  ),
+                ],
               ),
               const SizedBox(height: 64),
               //text field input for email
@@ -113,11 +122,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color: blueColor,
+                      color: blueColor2,
                     ),
                     child: _isLoading
                         ? const Center(child: CircularProgressIndicator(
-                      color: primaryColor,
+                      color: Colors.white,
                     ))
                         : const Center(
                             child: const Padding(
