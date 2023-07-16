@@ -134,12 +134,12 @@ class _AddDialogState extends State<AddDialog> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.lightBlueAccent, Colors.blue],
+            colors: [blueColor2, Colors.blue],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white, width: 2),
+          //border: Border.all(color: Colors.white, width: 2),
         ),
         padding: const EdgeInsets.all(16.0),
         child: Column(

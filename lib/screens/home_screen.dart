@@ -12,6 +12,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Marker> markerList = [];
+
+  Future<List<Marker>> fetchDocuments() async {
+    CollectionReference collectionRef = FirebaseFirestore.instance.collection('posts');
+    List<Marker> markers = [];
+
+    try {
+      QuerySnapshot querySnapshot = await collectionRef.get();
+      for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+        // Access document data
+        final Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+        String title = data['title'];
+        String postId = data['postId'];
+        double latitude = data['latitude'];
+        double longitude = data['longitude'];
+
+        markers.add(
+          Marker(
+            markerId: MarkerId(postId), // Unique ID for the marker
+            position: LatLng(latitude, longitude), // Coordinates of the post location
+            infoWindow: InfoWindow(title: title), // Info window content for the marker
+          ),
+        );
+
+        print('title: $title');
+        print('latitude: $latitude');
+        print('longitude: $longitude');
+      }
+    } catch (e) {
+      print('Error fetching documents: $e');
+    }
+
+    return markers;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,40 +70,29 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        child: FutureBuilder<List<Marker>>(
+          future: fetchDocuments(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final documents = snapshot.data!.docs;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              markerList = snapshot.data!;
               return GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(36.3721, 127.3604),
                   zoom: 15.0,
                 ),
-                markers: Set<Marker>.from(
-                  documents.map((snap) {
-                    final latitude = snap['latitude'];
-                    final longitude = snap['longitude'];
-
-                    return Marker(
-                      markerId: MarkerId(snap.id),
-                      position: LatLng(latitude, longitude),
-                      infoWindow: InfoWindow(title: snap['title']),
-                    );
-                  }),
-                ),
+                markers: Set<Marker>.from(markerList),
               );
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Container(); // Empty container as a fallback
             }
           },
-        )
-
-
-
+        ),
       ),
     );
   }
 }
+

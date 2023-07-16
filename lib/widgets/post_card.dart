@@ -15,7 +15,7 @@ class PostCard extends StatelessWidget {
     String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
     var date = dateString;
     return Card(
-      color: Colors.white.withOpacity(0.8),
+      color: Colors.white.withOpacity(0.85),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
