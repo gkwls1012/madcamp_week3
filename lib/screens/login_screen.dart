@@ -82,9 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Image(
                     image: AssetImage('assets/wavinghand.png'),
-                    color: primaryColor,
                     height: 64,
                   ),
+                  SizedBox(width: 16), // Add spacing between the two images
                   Image(
                     image: AssetImage('assets/logo_helphand.png'),
                     color: primaryColor,
@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 64),
               //text field input for email
               TextFieldInput(

@@ -49,37 +49,16 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                          child: ListView(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                            ),
-                            shrinkWrap: true,
-                            children: [
-                              'Delete',
-                            ]
-                                .map(
-                                  (e) => InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 16,
-                                  ),
-                                  child: Text(e),
-                                ),
-                              ),
-                            )
-                                .toList(),
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.more_vert),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8), // Set the border radius for rounded corners
+                      color: blueColor2,
+                    ),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text('도와주기', style: TextStyle(color: Colors.white,),),
+                    ),
                   ),
                 ],
               ),

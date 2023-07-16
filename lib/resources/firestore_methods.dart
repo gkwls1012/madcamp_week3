@@ -15,25 +15,30 @@ class FirestoreMethods {
       String description,
       String uid,
       String username,
+      double latitude,
+      double longitude,
       ) async {
     String res = "some error occurred";
     try {
-      //String photoUrl =
-      //await StorageMethods().uploadImageToStorage('posts', file, true);
+      if(title.isNotEmpty && description.isNotEmpty) {
+        String postId = const Uuid().v1();
+        Post post = Post(
+          title: title,
+          description: description,
+          uid: uid,
+          username: username,
+          postId: postId,
+          datePublished: DateTime.now(),
+          likes: [],
+          latitude: latitude,
+          longitude: longitude,
+        );
 
-      String postId = const Uuid().v1();
-      Post post = Post(
-        title: title,
-        description: description,
-        uid: uid,
-        username: username,
-        postId: postId,
-        datePublished: DateTime.now(),
-        likes: [],
-      );
-
-      await _firestore.collection('posts').doc(postId).set(post.toJson());
-      res = "success";
+        await _firestore.collection('posts').doc(postId).set(post.toJson());
+        res = "success";
+      } else {
+        res = "Please enter all the fields";
+      }
     } catch (err) {
       res = err.toString();
     }

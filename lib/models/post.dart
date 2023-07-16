@@ -7,6 +7,8 @@ class Post {
   final String username;
   final String postId;
   final datePublished;
+  final double latitude;
+  final double longitude;
   final likes;
 
   const Post({
@@ -16,6 +18,8 @@ class Post {
     required this.username,
     required this.postId,
     required this.likes,
+    required this.latitude,
+    required this.longitude,
     required this.datePublished,
   });
 
@@ -27,6 +31,8 @@ class Post {
     "postId": postId,
     "likes": likes,
     "datePublished": datePublished,
+    "latitude": latitude,
+    "longitude": longitude,
   };
 
   static Post fromSnap(DocumentSnapshot snap){
@@ -39,7 +45,9 @@ class Post {
       description: snapshot['description'],
       postId: snapshot['postId'],
       likes: snapshot['likes'],
-      datePublished: snapshot['datePublished']
+      datePublished: snapshot['datePublished'],
+      latitude: snapshot['latitude'],
+      longitude: snapshot['longitude'],
     );
   }
 }
