@@ -52,19 +52,16 @@ class _PostCardState extends State<PostCard> {
       });
 
       try {
-        await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).delete();
-        showSnackBar('Deleted!', context);
+        await FirebaseFirestore.instance.collection('posts').doc(widget.snap.id).delete();
         // Post deleted successfully
       } catch (e) {
         // Error occurred while deleting the post
-        showSnackBar(e.toString(), context);
+        print('Error deleting post: $e');
       }
 
       setState(() {
         _isLoading = false;
       });
-    }else{
-      showSnackBar('Some error occured', context);
     }
   }
 
@@ -87,7 +84,7 @@ class _PostCardState extends State<PostCard> {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
-                //vertical: 4,
+                vertical: 4,
                 horizontal: 16,
               ).copyWith(right: 0),
               child: Row(
