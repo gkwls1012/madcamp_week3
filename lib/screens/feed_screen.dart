@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/widgets/post_card.dart';
@@ -8,20 +9,20 @@ class FeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         centerTitle: false,
         title: Container(
-          //margin: const EdgeInsets.only(top: 20),
           child: Image(
-                image: AssetImage('assets/logo_helphand.png'),
-                height: 40,
-                color: primaryColor,
-              ),
+            image: AssetImage('assets/logo_helphand.png'),
+            height: 40,
+            color: primaryColor,
           ),
         ),
-
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -30,21 +31,24 @@ class FeedScreen extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: StreamBuilder(
+        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot<Map<String,dynamic>>> snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return const Center(
-                child: CircularProgressIndicator(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
               );
             }
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) => PostCard(
-                snap: snapshot.data!.docs[index].data()
+                snap: snapshot.data!.docs[index].data(),
+                uid: uid,
               ),
             );
-          }
+          },
         ),
       ),
     );

@@ -1,19 +1,81 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:intl/intl.dart';
 
+import '../utils/utils.dart';
 
-class PostCard extends StatelessWidget {
+
+class PostCard extends StatefulWidget {
   final snap;
-  const PostCard({Key? key, required this.snap}) : super(key: key);
+  final String uid;
+
+  const PostCard({Key? key, required this.snap, required this.uid}) : super(key: key);
+
+  @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool _isLoading = false;
+
+  void _deletePost(BuildContext context) async {
+    // Show confirmation dialog
+    bool confirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('확인'),
+          content: Text('정말로 이 게시물을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel deletion
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm deletion
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).delete();
+        showSnackBar('Deleted!', context);
+        // Post deleted successfully
+      } catch (e) {
+        // Error occurred while deleting the post
+        showSnackBar(e.toString(), context);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }else{
+      showSnackBar('Some error occured', context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Timestamp timestamp = snap['datePublished'];
+    Timestamp timestamp = widget.snap['datePublished'];
     DateTime dateTime = timestamp.toDate();
     String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
     var date = dateString;
+    bool mine = (widget.snap['uid'] == widget.uid);
+
     return Card(
       color: Colors.white.withOpacity(0.85),
       shape: RoundedRectangleBorder(
@@ -25,7 +87,7 @@ class PostCard extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
-                vertical: 4,
+                //vertical: 4,
                 horizontal: 16,
               ).copyWith(right: 0),
               child: Row(
@@ -41,58 +103,72 @@ class PostCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                              Text(
-                      snap['title'],
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
+                          Text(
+                            widget.snap['title'],
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8), // Set the border radius for rounded corners
-                      color: blueColor2,
+                  if (mine)
+                    Container(
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.red,
+                      ),
+                      child: TextButton(
+                        onPressed: () => _deletePost(context),
+                        child: _isLoading
+                            ? Center(child: CircularProgressIndicator(color: Colors.white))
+                            : Text(
+                          '삭제하기',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  else
+                    Container(
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: blueColor2,
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          '도와주기',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text('도와주기', style: TextStyle(color: Colors.white,),),
-                    ),
-                  ),
                 ],
               ),
             ),
             const Divider(),
-            //Description and number of comments
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                    ),
                     child: RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: snap['description'],
+                            text: widget.snap['description'],
                           ),
                         ],
                       ),
                     ),
                   ),
-
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      snap['username']+'이  '+date+'에 요청한 도움',
+                      widget.snap['username'] + '이  ' + date + '에 요청한 도움',
                       style: const TextStyle(fontSize: 14, color: primaryColor),
                     ),
                   ),
@@ -105,3 +181,4 @@ class PostCard extends StatelessWidget {
     );
   }
 }
+
