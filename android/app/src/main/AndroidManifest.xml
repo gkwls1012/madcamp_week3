@@ -1,9 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
     <application
-        package="com.example.myapp"
         android:label="untitled"
         android:name="androidx.multidex.MultiDexApplication"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA35l6obPjhs4_QHLdv7Xk4lhDxv4K8OKI"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

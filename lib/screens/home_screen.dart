@@ -70,7 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: FutureBuilder<List<Marker>>(
+        child: GoogleMap(
+    initialCameraPosition: CameraPosition(
+    target: LatLng(37.5665, 126.9780), // Set the initial map center coordinates
+    zoom: 14.0, // Set the initial zoom level
+    ),)
+        /*FutureBuilder<List<Marker>>(
           future: fetchDocuments(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -90,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Container(); // Empty container as a fallback
             }
           },
-        ),
+        ),*/
       ),
     );
   }
