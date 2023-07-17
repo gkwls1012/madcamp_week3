@@ -1,6 +1,6 @@
 class ChatRoom {
-  final String id;
-  final String name;
+  String? id;
+  String name;
   // final Set<String> participants;
   // final Message message;
 
