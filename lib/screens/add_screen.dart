@@ -10,7 +10,7 @@ import 'package:untitled/utils/colors.dart';
 import 'package:untitled/utils/utils.dart';
 import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
-import 'chat_screen.dart'; // Import the ChatScreen
+import 'chat_list_screen.dart'; // Import the ChatScreen
 
 class AddDialog extends StatefulWidget {
   const AddDialog({Key? key}) : super(key: key);
