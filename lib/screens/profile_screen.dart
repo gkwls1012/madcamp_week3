@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/utils/colors.dart';
 
+import '../utils/utils.dart';
+import 'login_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -34,6 +37,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       email = (snap.data() as Map<String, dynamic>)['email'];
       bio = (snap.data() as Map<String, dynamic>)['bio'];
     });
+  }
+
+  void logout() async {
+
+    FirebaseAuth.instance.signOut();
+    showSnackBar('로그아웃 되었습니다', context);
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -162,15 +177,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
 
+
+
+                Container(
+                  width: 300,
+                  margin: EdgeInsets.only(top: 10, right: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                  child: TextButton(
+                    onPressed: logout,
+                    child: Text(
+                      ' 로그아웃 ',
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 20),
                 Divider(),
-                //give, receive 목록
+                SizedBox(height: 10),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // 내가 준 도움
                     Container(
-                      width: 150,
+                      width: 200,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),

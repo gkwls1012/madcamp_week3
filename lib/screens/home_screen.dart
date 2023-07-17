@@ -93,7 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    Image(image: AssetImage('assets/wavinghand.png'), width: 50,),
+                    Image(
+                      image: AssetImage('assets/wavinghand.png'),
+                      width: 50,
+                    ),
                     SizedBox(width: 15),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,19 +105,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               username,
-                              style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               ' 님,',
-                              style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.normal,),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ],
                         ),
                         Text(
                           '도움을 주고 받아 보세요',
-                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal,),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-
                       ],
                     ),
                   ],
@@ -223,7 +237,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-
+                Divider(),
+                SizedBox(height: 10),
                 //진행 중인 도움
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -232,22 +247,99 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          children: [
+                            SizedBox(width:5),
+                            Image(image: AssetImage('assets/check.jpg'), width: 30,),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Text(
+                                '진행 중인 도움',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
                           child: Text(
-                            '진행 중인 도움',
+                            '아이스크림',
                             style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Text(
+                            '2시에 깨워주세요ㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          children: [
+                            SizedBox(width:5),
+                            Image(image: AssetImage('assets/megaphone.jpg'), width: 30,),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Text(
+                                '요청 중인 도움',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 15),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.blue,
@@ -288,7 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-
+                SizedBox(height: 10),
+                Divider(),
 
                 SizedBox(height: 10),
                 //Map
@@ -332,8 +425,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ConnectionState.waiting) {
                             return Center(
                                 child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ));
+                              color: Colors.white,
+                            ));
                           } else if (snapshot.hasError) {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
@@ -358,7 +451,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        )
-
-    );
-  }}
+        ));
+  }
+}

@@ -18,33 +18,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final _chatController = TextEditingController();
   final _chatFocusNode = FocusNode();
 
-  // bool _isLoading = true;
-
   @override
   void initState() {
     super.initState();
     // getinfo();
   }
 
-  // void getinfo() async {
-  //   var provider = context.read<UserProvider>();
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   await provider.refreshUser();
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
-
-  // getData() async {
-  //   var result = await _firestore
-  //       .collection('chats')
-  //       .doc('GDTcCstQBWnoXkZ6Av2L')
-  //       .collection('message')
-  //       .doc('b87Z69QlUkMUeghSOu5Z')
-  //       .get();
-  //   print(result.data());
   // }
 
   createData(String content, String user) async {
