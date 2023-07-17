@@ -62,9 +62,11 @@ flutter:
   assets:
     - assets/logo_helphand.png
     - assets/wavinghand.png
-    - assets/profileimage.png
     - assets/toll.gif
     - assets/baeby.gif
+    - assets/spongebob.png
+    - assets/pikachu.png
+    - assets/bird.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

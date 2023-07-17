@@ -33,7 +33,7 @@ class User {
       username: snapshot['username'],
       uid: snapshot['uid'],
       email: snapshot['email'],
-      bio: snapshot['bio'],
+      bio: snapshot['bio'], //한줄소개
       give: snapshot['give'],
       receive: snapshot['receive'],
     );
