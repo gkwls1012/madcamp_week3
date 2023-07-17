@@ -48,8 +48,20 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     //return Scaffold(body: Center(child:Text('$username'),));
     return Scaffold(
-      body: PageView(
+        appBar: AppBar(
+          backgroundColor: mobileBackgroundColor,
+          //centerTitle: false,
+          title: Container(
+            child: Image(
+              image: AssetImage('assets/logo_helphand.png'),
+              height: 40,
+              color: primaryColor,
+            ),
+          ),
+        ),
+        body: PageView(
         children: homeScreenItems,
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
       ),

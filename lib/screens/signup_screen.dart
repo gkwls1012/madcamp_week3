@@ -57,14 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
-          ),
-        ),
-      );
+      navigateToLogin();
     }
     setState(() {
       _isLoading = false;
@@ -99,41 +92,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 color: primaryColor,
                 height: 64,
               ),
-/*
-              //circular widget to accept and show our selected file
-              Stack(
-
-                children: [
-                  _image != null
-                      ? CircleAvatar(
-                          radius: 64,
-                          backgroundImage: MemoryImage(_image!),
-                          backgroundColor: Colors.white,
-                        )
-                      : const CircleAvatar(
-                          radius: 64,
-                          backgroundImage: AssetImage('assets/wavinghand.png'),
-                          backgroundColor: Colors.white,
-                        ),
-                  Positioned(
-                    bottom: 0,
-                    left: 80,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: const Icon(Icons.add_a_photo,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-  */
               const SizedBox(height: 24),
               //text field input for username
               TextFieldInput(
-                hintText: 'Enter your username',
+                hintText: '닉네임',
                 textInputType: TextInputType.text,
                 textEditingController: _usernameController,
               ),
@@ -143,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
               //text field input for email
               TextFieldInput(
-                hintText: 'Enter your email',
+                hintText: '이메일주소',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
               ),
@@ -152,7 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               //text field input for password
               TextFieldInput(
-                hintText: 'Enter your password',
+                hintText: '비밀번호',
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
@@ -162,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
 
               TextFieldInput(
-                hintText: 'Enter your bio',
+                hintText: '한줄소개를 입력해주세요',
                 textInputType: TextInputType.text,
                 textEditingController: _bioController,
               ),
@@ -191,7 +153,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
-                                'Sign up',
+                                '회원가입하기',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -211,12 +173,6 @@ class _SignupScreenState extends State<SignupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: const Text("Return to "),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                  ),
                   GestureDetector(
                     onTap: navigateToLogin,
                     child: Padding(
@@ -224,11 +180,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         vertical: 8,
                       ),
                       child: const Text(
-                        "Login",
+                        "로그인 페이지",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                  ),
+                  Container(
+                    child: const Text("로 돌아가기"),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
                     ),
                   ),
                 ],

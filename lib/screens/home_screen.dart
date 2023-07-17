@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
@@ -17,11 +18,23 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Marker> markerList = [];
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(37.5665, 126.9780);
+  String username = "";
 
   @override
   void initState() {
     super.initState();
+    getinfo();
     fetchDocuments();
+  }
+
+  void getinfo() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      username = (snap.data() as Map<String, dynamic>)['username'];
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -29,14 +42,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<Marker>> fetchDocuments() async {
-    CollectionReference collectionRef = FirebaseFirestore.instance.collection('posts');
+    CollectionReference collectionRef =
+        FirebaseFirestore.instance.collection('posts');
     List<Marker> markers = [];
 
     try {
       QuerySnapshot querySnapshot = await collectionRef.get();
       for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
         // Access document data
-        final Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+        final Map<String, dynamic> data =
+            docSnapshot.data() as Map<String, dynamic>;
         String title = data['title'];
         String postId = data['postId'];
         double latitude = data['latitude'];
@@ -44,15 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
         markers.add(
           Marker(
-            markerId: MarkerId(postId), // Unique ID for the marker
-            position: LatLng(latitude, longitude), // Coordinates of the post location
-            infoWindow: InfoWindow(title: title), // Info window content for the marker
+            markerId: MarkerId(postId),
+            // Unique ID for the marker
+            position: LatLng(latitude, longitude),
+            // Coordinates of the post location
+            infoWindow:
+                InfoWindow(title: title), // Info window content for the marker
           ),
         );
-
-        print('title: $title');
-        print('latitude: $latitude');
-        print('longitude: $longitude');
       }
     } catch (e) {
       print('Error fetching documents: $e');
@@ -63,93 +77,264 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: mobileBackgroundColor,
-          title: Row(
-            children: [
-              Image(
-                image: AssetImage('assets/logo_helphand.png'),
-                height: 40,
-                color: primaryColor,
-              ),
-            ],
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [secondaryColor, primaryColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [secondaryColor, primaryColor],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
+        child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.85),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      '내 주변의 도움 요청들',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    margin: EdgeInsets.only(top: 0),
-                    child: FutureBuilder<List<Marker>>(
-                      future: fetchDocuments(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ));
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
-                        } else if (snapshot.hasData) {
-                          List<Marker> markerList = snapshot.data!;
-                          return GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(36.3721, 127.3604),
-                              zoom: 15.0,
+                Row(
+                  children: [
+                    Image(image: AssetImage('assets/wavinghand.png'), width: 50,),
+                    SizedBox(width: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              username,
+                              style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,),
                             ),
-                            markers: Set<Marker>.from(markerList),
-                          );
-                        } else {
-                          return Container(); // Empty container as a fallback
-                        }
-                      },
+                            Text(
+                              ' 님,',
+                              style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.normal,),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '도움을 주고 받아 보세요',
+                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal,),
+                        ),
+
+                      ],
                     ),
-                  ),
+                  ],
+                ),
+
+                SizedBox(height: 15),
+
+                Row(
+                  children: [
+                    // 내가 준 도움
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      padding: EdgeInsets.only(bottom: 10, top: 10),
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '내가 준 도움',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 12,
+                              ),
+                              Text(
+                                '5 / Lv.1',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Expanded(
+                              child: Image.asset(
+                                'assets/toll.gif',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // 내가 받은 도움
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      padding: EdgeInsets.only(bottom: 10, top: 10),
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '내가 받은 도움',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 12,
+                              ),
+                              Text(
+                                '12 / Lv.2',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Expanded(
+                              child: Image.asset(
+                                'assets/baeby.gif',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                //진행 중인 도움
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          '진행 중인 도움',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      margin: EdgeInsets.only(top: 0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text('dkdkdk'),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 10),
+                //Map
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          '내 주변의 도움 요청들',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      margin: EdgeInsets.only(top: 0),
+                      child: FutureBuilder<List<Marker>>(
+                        future: fetchDocuments(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ));
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            List<Marker> markerList = snapshot.data!;
+                            return GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(36.3721, 127.3604),
+                                zoom: 15.0,
+                              ),
+                              markers: Set<Marker>.from(markerList),
+                            );
+                          } else {
+                            return Container(); // Empty container as a fallback
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
-      ),
+        )
+
     );
-  }
-}
+  }}

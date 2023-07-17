@@ -12,17 +12,6 @@ class FeedScreen extends StatelessWidget {
     String uid = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        centerTitle: false,
-        title: Container(
-          child: Image(
-            image: AssetImage('assets/logo_helphand.png'),
-            height: 40,
-            color: primaryColor,
-          ),
-        ),
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

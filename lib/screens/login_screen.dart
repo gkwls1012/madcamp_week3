@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 64),
               //text field input for email
               TextFieldInput(
-                hintText: 'Enter your email',
+                hintText: '이메일 주소',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
               ),
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               //text field input for password
               TextFieldInput(
-                hintText: 'Enter your password',
+                hintText: '비밀번호',
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
@@ -130,14 +130,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.white,
                     ))
                         : const Center(
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Log In',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          '로그인',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text("Don't have an account?"),
+                    child: const Text("처음 방문하셨나요?  "),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         vertical: 8,
                       ),
                       child: const Text(
-                        "Sign up",
+                        "회원가입하기",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

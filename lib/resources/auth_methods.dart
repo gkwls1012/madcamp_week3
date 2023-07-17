@@ -45,11 +45,10 @@ class AuthMethods {
         model.User user = model.User(
             email: email,
             uid: cred.user!.uid,
-            //photoUrl: photoUrl,
             username: username,
             bio: bio,
-            followers: [],
-            following: []);
+            give: [],
+            receive: []);
         //add user to our database
         await _firestore.collection('users').doc(cred.user!.uid).set(
               user.toJson(),

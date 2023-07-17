@@ -52,7 +52,7 @@ class _PostCardState extends State<PostCard> {
       });
 
       try {
-        await FirebaseFirestore.instance.collection('posts').doc(widget.snap.id).delete();
+        await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).delete();
         // Post deleted successfully
       } catch (e) {
         // Error occurred while deleting the post
@@ -143,7 +143,6 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
-            const Divider(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -154,6 +153,7 @@ class _PostCardState extends State<PostCard> {
                     width: double.infinity,
                     child: RichText(
                       text: TextSpan(
+                        style: TextStyle(color: Colors.black), // Set the text color to black
                         children: [
                           TextSpan(
                             text: widget.snap['description'],
@@ -165,7 +165,7 @@ class _PostCardState extends State<PostCard> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      widget.snap['username'] + '이  ' + date + '에 요청한 도움',
+                      widget.snap['username'] + ' 님이  ' + date + '에 요청한 도움',
                       style: const TextStyle(fontSize: 14, color: primaryColor),
                     ),
                   ),

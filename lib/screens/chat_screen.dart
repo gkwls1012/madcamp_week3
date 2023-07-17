@@ -15,18 +15,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        title: Row(
-          children: [
-            Image(
-              image: AssetImage('assets/logo_helphand.png'),
-              height: 40,
-              color: primaryColor,
-            ),
-          ],
-        ),
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

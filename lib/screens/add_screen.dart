@@ -146,7 +146,7 @@ class _AddDialogState extends State<AddDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              username + '님! 새로운 도움을 요청해보세요',
+              username + ' 님! 새로운 도움을 요청해보세요',
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
