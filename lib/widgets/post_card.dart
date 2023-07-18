@@ -23,14 +23,23 @@ class _PostCardState extends State<PostCard> {
   bool _isLoading = false;
   String username = "";
 
+  @override
+  void initState() {
+    getinfo(widget.snap['uid']);
+    super.initState();
+  }
+
   void getinfo(uid) async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
-    setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
-    });
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    print(snap.data());
+    if (snap.exists) {
+      setState(() {
+        username = (snap.data() as Map<String, dynamic>)['username'];
+      });
+    } else {
+      // 문서가 존재하지 않는 경우 처리
+    }
   }
 
   void _deletePost(BuildContext context) async {
@@ -88,7 +97,6 @@ class _PostCardState extends State<PostCard> {
     String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
     var date = dateString;
     bool mine = (widget.snap['uid'] == widget.uid);
-    getinfo(widget.snap['uid']);
 
     return Card(
       color: Colors.white.withOpacity(0.85),
@@ -131,7 +139,9 @@ class _PostCardState extends State<PostCard> {
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: widget.snap['likes'].isEmpty ? Colors.red : Colors.lightGreen,
+                        color: widget.snap['likes'].isEmpty
+                            ? Colors.red
+                            : Colors.lightGreen,
                       ),
                       child: TextButton(
                         onPressed: () => _deletePost(context),
