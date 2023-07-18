@@ -141,6 +141,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.snap);
     var provider = context.watch<UserProvider>();
     user = provider.getUser.uid;
     // if(_isLoading){
@@ -260,25 +261,31 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         builder: (_) => StatefulBuilder(
               builder: ((context, setCategoryState) => CupertinoActionSheet(
                     actions: [
+                      // CupertinoActionSheetAction(
+                      //     onPressed: () {
+                      //       setState(() {});
+                      //     },
+                      //     child: Text(
+                      //       "알림끄기",
+                      //     )),
+                      // CupertinoActionSheetAction(
+                      //     onPressed: () {
+                      //       setState(() {});
+                      //     },
+                      //     child: Text(
+                      //       "차단하기",
+                      //     )),
+                      // if(widget.snap["uid"] == user)
                       CupertinoActionSheetAction(
                           onPressed: () {
                             setState(() {});
                           },
                           child: Text(
-                            "알림끄기",
-                          )),
-                      CupertinoActionSheetAction(
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          child: Text(
-                            "차단하기",
+                            "완료하기",
                           )),
                       CupertinoActionSheetAction(
                           onPressed: () async {
-                            if (widget.snap["uid"] != user) {
-                              removeChatRoom();
-                            }
+                            removeChatRoom();
                           },
                           child: Text(
                             "채팅방 나가기",

@@ -107,8 +107,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           final String name = rooms[index]['name'];
                           var lastMessage;
 
-                          postUid = rooms[index]['participants'][0];
-
                           // Messages 컬렉션을 가져오기 위해 서브컬렉션 참조
                           CollectionReference messagesRef =
                               rooms[index].reference.collection('messages');
@@ -144,6 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   style: TextStyle(fontSize: 12),
                                 ),
                                 onTap: () {
+                                  postUid = rooms[index]['participants'][0];
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

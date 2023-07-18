@@ -44,12 +44,7 @@ class _FeedScreenState extends State<FeedScreen> {
       }
     }
 
-    LocationData? locationData = await location.getLocation();
-    if (locationData != null) {
-      setState(() {
-        _currentLocation = locationData;
-      });
-    }
+    _currentLocation = await location.getLocation();
   }
 
   @override
