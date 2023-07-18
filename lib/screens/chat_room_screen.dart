@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom chatRoom;
   final dynamic snap;
-  const ChatRoomPage({required this.chatRoom, this.snap, super.key});
+  final String helpUid;
+  const ChatRoomPage({required this.chatRoom, this.snap, required this.helpUid, super.key});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -71,7 +72,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           // 상위 컬렉션에 새로운 문서 추가
           await chatRoomsRef.set({
             "name": widget.chatRoom.name,
-            "participants": [widget.snap['uid'], user],
+            "participants": [widget.snap["uid"], user],
           });
 
           // 하위 컬렉션 참조
@@ -144,21 +145,52 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               ? widget.snap['postId']
               : widget.chatRoom.id)
           .update({"likes": []});
-      await _firestore.collection('users').doc(user).update({
+      await _firestore.collection('users').doc(widget.helpUid).update({
         "giving": FieldValue.arrayRemove([
-          {"postId": widget.chatRoom.id ?? widget.snap['postId'], "postName": widget.chatRoom.name}
+          {
+            "postId": widget.chatRoom.id ?? widget.snap['postId'],
+            "postName": widget.chatRoom.name
+          }
         ])
       });
 
       await _firestore.collection('users').doc(widget.snap["uid"]).update({
         "receiving": FieldValue.arrayRemove([
-          {"postId": widget.chatRoom.id ?? widget.snap['postId'], "postName": widget.chatRoom.name}
+          {
+            "postId": widget.chatRoom.id ?? widget.snap['postId'],
+            "postName": widget.chatRoom.name
+          }
         ])
       });
       setState(() {
         _isRoomRemoved = true;
       });
     }
+  }
+
+  doneRequest(DateTime doneDate) async {
+    await _firestore.collection('users').doc(widget.helpUid).update({
+      "give": FieldValue.arrayUnion([
+        {
+          "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+          "doneDate": doneDate
+        }
+      ])
+    });
+
+    await _firestore.collection('users').doc(widget.snap["uid"]).update({
+      "receive": FieldValue.arrayUnion([
+        {
+          "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+          "doneDate": doneDate
+        }
+      ])
+    });
+
+    await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.chatRoom.id)
+            .delete();
   }
 
   @override
@@ -190,9 +222,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     //     ),
     //   );
     // }
-    if (_isRoomRemoved) {
-      Navigator.pop(context);
-    }
     return GestureDetector(
       onTap: () {
         // FocusScope.of(context).unfocus();
@@ -306,15 +335,19 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       //     )),
                       if (widget.snap["uid"] == user)
                         CupertinoActionSheetAction(
-                            onPressed: () {
-                              setState(() {});
+                            onPressed: () async {
+                              final DateTime doneDate = DateTime.now();
+                              await removeChatRoom();
+                              await doneRequest(doneDate);
+                              Navigator.pop(context);
                             },
                             child: Text(
                               "완료하기",
                             )),
                       CupertinoActionSheetAction(
                           onPressed: () async {
-                            removeChatRoom();
+                            await removeChatRoom();
+                            Navigator.pop(context);
                           },
                           child: Text(
                             "채팅방 나가기",

@@ -215,6 +215,7 @@ class _PostCardState extends State<PostCard> {
                                       chatRoom: ChatRoom(
                                           id: null, name: widget.snap['title']),
                                       snap: widget.snap,
+                                      helpUid: widget.uid,
                                     ),
                                   ),
                                 )

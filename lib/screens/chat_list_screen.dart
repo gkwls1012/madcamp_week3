@@ -18,6 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _firestore = FirebaseFirestore.instance;
   bool _isLoading = true;
   var postUid;
+  var helpUid;
 
   @override
   void initState() {
@@ -143,12 +144,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                                 onTap: () {
                                   postUid = rooms[index]['participants'][0];
+                                  helpUid = rooms[index]['participants'][1];
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ChatRoomPage(
                                         chatRoom: ChatRoom(id: id, name: name),
                                         snap: {"uid": postUid},
+                                        helpUid: helpUid
                                       ),
                                     ),
                                   );
