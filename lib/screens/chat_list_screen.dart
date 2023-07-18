@@ -38,10 +38,16 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  // String lastMessageDate(QueryDocumentSnapshot<Object?> lastMessage){
+  //   int nowDay = DateTime.now().day + (DateTime.now().hour + 9) ~/ 24;
+  //   int lastDay = lastMessage['timestamp'].toDate().day + (lastMessage['timestamp'].toDate().hour + 9) ~/ 24;
+  //   if
+  // }
+
   @override
   Widget build(BuildContext context) {
     var provider = context.watch<UserProvider>();
-    if(_isLoading){
+    if (_isLoading) {
       return SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -51,7 +57,8 @@ class _ChatScreenState extends State<ChatScreen> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Center(child: CircularProgressIndicator(
+          child: Center(
+            child: CircularProgressIndicator(
               color: Colors.white,
             ),
           ),
@@ -85,7 +92,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 StreamBuilder<QuerySnapshot>(
                   stream: _firestore
                       .collection('chatRooms')
-                      .where('participants', arrayContains: provider.getUser.uid)
+                      .where('participants',
+                          arrayContains: provider.getUser.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -132,7 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 title: Text(name),
                                 subtitle: Text(lastMessage['content']),
                                 additionalInfo: Text(
-                                  '${(lastMessage['timestamp'].toDate().hour + 9).toString().padLeft(2, '0')}:${lastMessage['timestamp'].toDate().minute.toString().padLeft(2, '0')}',
+                                  DateTime.now().toString(),
                                   style: TextStyle(fontSize: 12),
                                 ),
                                 onTap: () {
