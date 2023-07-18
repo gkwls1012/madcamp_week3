@@ -3,15 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/screens/chat_room_screen.dart';
+import 'package:untitled/models/chatroom.dart';
 
 import '../utils/utils.dart';
-
 
 class PostCard extends StatefulWidget {
   final snap;
   final String uid;
 
-  const PostCard({Key? key, required this.snap, required this.uid}) : super(key: key);
+  const PostCard({Key? key, required this.snap, required this.uid})
+      : super(key: key);
 
   @override
   _PostCardState createState() => _PostCardState();
@@ -52,7 +54,10 @@ class _PostCardState extends State<PostCard> {
       });
 
       try {
-        await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).delete();
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.snap['postId'])
+            .delete();
         // Post deleted successfully
       } catch (e) {
         // Error occurred while deleting the post
@@ -102,7 +107,8 @@ class _PostCardState extends State<PostCard> {
                         children: [
                           Text(
                             widget.snap['title'],
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
@@ -118,11 +124,13 @@ class _PostCardState extends State<PostCard> {
                       child: TextButton(
                         onPressed: () => _deletePost(context),
                         child: _isLoading
-                            ? Center(child: CircularProgressIndicator(color: Colors.white))
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.white))
                             : Text(
-                          '삭제하기',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                                '삭제하기',
+                                style: TextStyle(color: Colors.white),
+                              ),
                       ),
                     )
                   else
@@ -133,7 +141,17 @@ class _PostCardState extends State<PostCard> {
                         color: blueColor2,
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatRoomPage(
+                                chatRoom: ChatRoom(id: null, name: widget.snap['title']),
+                                recipient: widget.snap['uid'],
+                              ),
+                            ),
+                          );
+                        },
                         child: Text(
                           '도와주기',
                           style: TextStyle(color: Colors.white),
@@ -153,7 +171,8 @@ class _PostCardState extends State<PostCard> {
                     width: double.infinity,
                     child: RichText(
                       text: TextSpan(
-                        style: TextStyle(color: Colors.black), // Set the text color to black
+                        style: TextStyle(
+                            color: Colors.black), // Set the text color to black
                         children: [
                           TextSpan(
                             text: widget.snap['description'],
@@ -178,4 +197,3 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
-

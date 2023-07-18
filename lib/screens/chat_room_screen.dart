@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom chatRoom;
-  const ChatRoomPage({required this.chatRoom, super.key});
+  final String? recipient;
+  const ChatRoomPage({required this.chatRoom, this.recipient, super.key});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -18,9 +19,17 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final _chatController = TextEditingController();
   final _chatFocusNode = FocusNode();
 
+  bool _isRoomCreated = false;
+  String? roomId;
+
   @override
   void initState() {
     super.initState();
+    if (widget.chatRoom.id != null) {
+      setState(() {
+        _isRoomCreated = true;
+      });
+    }
     // getinfo();
   }
 
@@ -28,15 +37,44 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   createData(String content, String user) async {
     if (content.trim().isNotEmpty) {
+      _chatController.clear();
       final messageCollectionReference = _firestore
           .collection('chatRooms')
-          .doc(widget.chatRoom.id)
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? roomId : widget.chatRoom.id)
           .collection('messages')
           .doc();
-      messageCollectionReference.set(
+      await messageCollectionReference.set(
           {"content": content, "sender": user, "timestamp": DateTime.now()});
-      _chatController.clear();
       // print(DateTime.now().add(const Duration(hours: 9)));
+    }
+  }
+
+  createChatRoom(String content, String user) async {
+    if (content.trim().isNotEmpty) {
+      _chatController.clear();
+      // 상위 컬렉션 참조
+      CollectionReference chatRoomsRef = _firestore.collection('chatRooms');
+
+      // 상위 컬렉션에 새로운 문서 추가
+      DocumentReference newDocumentRef = await chatRoomsRef.add({
+        "name": widget.chatRoom.name,
+        "participants": [user, widget.recipient],
+      });
+
+      // 하위 컬렉션 참조
+      CollectionReference messagesRef = newDocumentRef.collection('messages');
+
+      // 하위 컬렉션에 새로운 문서 추가
+      await messagesRef.add({
+        'content': content,
+        'sender': user,
+        'timestamp': DateTime.now(),
+      });
+
+      setState(() {
+        _isRoomCreated = true;
+        roomId = newDocumentRef.id;
+      });
     }
   }
 
@@ -89,7 +127,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               StreamBuilder<QuerySnapshot>(
                 stream: _firestore
                     .collection('chatRooms')
-                    .doc(widget.chatRoom.id)
+                    .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? roomId : widget.chatRoom.id)
                     .collection('messages')
                     .orderBy("timestamp", descending: true)
                     .snapshots(),
@@ -105,7 +143,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       itemCount: messages.length,
                       itemBuilder: (context, index) {
                         final message = messages[index]['content'];
-                        final isMe = messages[index]['sender'] == provider.getUser.uid;
+                        final isMe =
+                            messages[index]['sender'] == provider.getUser.uid;
                         final dateTime = messages[index]['timestamp']
                             .toDate()
                             .add(const Duration(hours: 9));
@@ -138,7 +177,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     CupertinoButton(
                       child: Icon(Icons.send),
                       onPressed: () {
-                        createData(_chatController.text, provider.getUser.uid);
+                        _isRoomCreated
+                            ? createData(
+                                _chatController.text, provider.getUser.uid)
+                            : createChatRoom(
+                                _chatController.text, provider.getUser.uid);
                       },
                     ),
                   ],
