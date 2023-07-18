@@ -114,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -180,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // 내가 준 도움
                     Container(
-                      width: 150,
+                      width: 135,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -229,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // 내가 받은 도움
                     Container(
-                      width: 150,
+                      width: 135,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),

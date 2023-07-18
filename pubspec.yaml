@@ -71,7 +71,7 @@ flutter:
     - assets/megaphone.jpg
     - assets/check.jpg
     - assets/info.png
-    - assets/example.png
+    - assets/tape.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
