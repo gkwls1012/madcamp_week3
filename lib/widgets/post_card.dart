@@ -119,7 +119,7 @@ class _PostCardState extends State<PostCard> {
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.red,
+                        color: widget.snap['likes'].isEmpty ? Colors.red : Colors.lightGreen,
                       ),
                       child: TextButton(
                         onPressed: () => _deletePost(context),
@@ -128,7 +128,7 @@ class _PostCardState extends State<PostCard> {
                                 child: CircularProgressIndicator(
                                     color: Colors.white))
                             : Text(
-                                '삭제하기',
+                                widget.snap['likes'].isEmpty ? '삭제하기' : '완료하기',
                                 style: TextStyle(color: Colors.white),
                               ),
                       ),
