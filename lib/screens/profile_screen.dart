@@ -1,9 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/screens/recieve_list_screen.dart';
 import 'package:untitled/utils/colors.dart';
-
 import '../utils/utils.dart';
 import 'login_screen.dart';
 
@@ -51,7 +50,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void editProfile() {
-    TextEditingController usernamecontroller = TextEditingController(text: username);
+    TextEditingController usernamecontroller =
+        TextEditingController(text: username);
     TextEditingController emailcontroller = TextEditingController(text: email);
     TextEditingController biocontroller = TextEditingController(text: bio);
     showDialog(
@@ -87,7 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 if (snap.exists) {
                   // User document exists, update the fields
-                  Map<String, dynamic> userData = snap.data() as Map<String, dynamic>;
+                  Map<String, dynamic> userData =
+                      snap.data() as Map<String, dynamic>;
 
                   // Update the desired fields
                   userData['email'] = emailcontroller.text;
@@ -95,9 +96,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   userData['bio'] = biocontroller.text;
 
                   // Save the updated user document back to Firestore
-                  await FirebaseFirestore.instance.collection('users').doc(uid).update(userData);
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .update(userData);
                   showSnackBar('프로필이 변경되었습니다', context);
-
                 } else {
                   // User document doesn't exist, handle the error or create a new document
                 }
@@ -117,16 +120,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  bool isContainer1Visible = true;
-
-  void toggleContainer() {
-    setState(() {
-      isContainer1Visible = !isContainer1Visible;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<String> stringList = [
+      'String 1',
+      'String 2',
+      'String 3',
+      'String 4',
+      'String 5'
+    ];
     return Scaffold(
         body: Container(
       width: double.infinity,
@@ -147,11 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 20),
 
                 //username
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 20),
-                    Column(
+                Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +214,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 100,
                               margin: EdgeInsets.only(top: 10, right: 10),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white, width: 2),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.white.withOpacity(0.8),
                               ),
@@ -235,7 +234,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 100,
                               margin: EdgeInsets.only(top: 10, right: 10),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white, width: 2),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.white.withOpacity(0.8),
                               ),
@@ -254,151 +254,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-                       SizedBox(width: 20),
-                       Expanded(
-                         child: GestureDetector(
-                           onTap: toggleContainer,
-                           child: isContainer1Visible
-                               ? Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                            ),
-                            padding: EdgeInsets.only(bottom: 10, top: 10),
-                            margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '내가 준 도움',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                      size: 12,
-                                    ),
-                                    Text(
-                                      '5 / Lv.1',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Expanded(
-                                    child: Image.asset(
-                                      'assets/toll.gif',
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                               : Container(
-                             decoration: BoxDecoration(
-                               color: Colors.white,
-                               borderRadius: BorderRadius.all(Radius.circular(20)),
-                             ),
-                             padding: EdgeInsets.only(bottom: 10, top: 10),
-                             margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
-                             child: Column(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                               children: [
-                                 Text(
-                                   '내가 받은 도움',
-                                   style: TextStyle(
-                                     fontWeight: FontWeight.bold,
-                                     color: Colors.black,
-                                   ),
-                                 ),
-                                 SizedBox(height: 5),
-                                 Row(
-                                   mainAxisAlignment: MainAxisAlignment.center,
-                                   children: [
-                                     Icon(
-                                       Icons.favorite,
-                                       color: Colors.red,
-                                       size: 12,
-                                     ),
-                                     Text(
-                                       '12 / Lv.2',
-                                       style: TextStyle(
-                                         color: Colors.black,
-                                       ),
-                                     ),
-                                   ],
-                                 ),
-                                 Padding(
-                                   padding: EdgeInsets.all(5),
-                                   child: Expanded(
-                                     child: Image.asset(
-                                       'assets/baeby.gif',
-                                       fit: BoxFit.contain,
-                                     ),
-                                   ),
-                                 ),
-                               ],
-                             ),
-                           ),
-                       ),
 
-
-
-                       ),
-
-],
-                ),
                 SizedBox(height: 20),
                 Divider(),
                 SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        //내가 준 도움 기록
-                        Container(
-                            width: 240,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image(image: AssetImage('assets/tape.png')),
-                                Text('내가 준 도움 기록',),
-                              ],
-                            )
-
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        //내가 받은 도움 기록
-                        Container(
-                            width: 240,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image(image: AssetImage('assets/tape.png')),
-                                Text('내가 받은 도움 기록',),
-                              ],
-                            )
-
-                        ),
-                      ],
-                    ),
-                  ],
-                )
+                Container(
+                  width: 240,
+                  child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image(image: AssetImage('assets/tape.png')),
+                          TextButton(onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Recieve()),
+                            );
+                          }, child: Text('내가 준 도움 기록')),
+                        ],
+                  ),
+                ),
               ],
             ),
           ),
