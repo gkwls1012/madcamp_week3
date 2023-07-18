@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +22,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final _chatFocusNode = FocusNode();
 
   bool _isRoomCreated = false;
+  bool _isRoomRemoved = false;
+  var user;
 
   @override
   void initState() {
@@ -39,7 +43,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       _chatController.clear();
       final messageCollectionReference = _firestore
           .collection('chatRooms')
-          .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? widget.snap['postId'] : widget.chatRoom.id)
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated)
+              ? widget.snap['postId']
+              : widget.chatRoom.id)
           .collection('messages')
           .doc();
       await messageCollectionReference.set(
@@ -52,9 +58,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     if (content.trim().isNotEmpty) {
       _chatController.clear();
       // 상위 컬렉션 참조
-      final chatRoomsRef = _firestore.collection('chatRooms').doc(widget.snap['postId']);
+      final chatRoomsRef =
+          _firestore.collection('chatRooms').doc(widget.snap['postId']);
 
-      await chatRoomsRef.get().then((docSnapshot) async{
+      await chatRoomsRef.get().then((docSnapshot) async {
         if (docSnapshot.exists) {
           // 문서가 존재하는 경우
           print('문서가 존재합니다.');
@@ -64,7 +71,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           // 상위 컬렉션에 새로운 문서 추가
           await chatRoomsRef.set({
             "name": widget.chatRoom.name,
-            "participants": [user, widget.snap['uid']],
+            "participants": [widget.snap['uid'], user],
           });
 
           // 하위 컬렉션 참조
@@ -78,14 +85,49 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           });
 
           await _firestore
-                .collection('posts')
-                .doc(widget.snap['postId'])
-                .update({"likes": [user]});
+              .collection('posts')
+              .doc(widget.snap['postId'])
+              .update({
+            "likes": [user]
+          });
 
           setState(() {
             _isRoomCreated = true;
           });
         }
+      });
+    }
+  }
+
+  removeChatRoom() async {
+    if (_isRoomCreated) {
+      await _firestore
+          .collection('chatRooms')
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated)
+              ? widget.snap['postId']
+              : widget.chatRoom.id)
+          .delete();
+      // 해당 문서에 포함된 모든 컬렉션 가져오기
+      QuerySnapshot collectionSnapshot = await _firestore
+          .collection('chatRooms')
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated)
+              ? widget.snap['postId']
+              : widget.chatRoom.id)
+          .collection('messages')
+          .get();
+
+      // 각 컬렉션의 문서를 하나씩 삭제
+      collectionSnapshot.docs.forEach((doc) async {
+        await doc.reference.delete();
+      });
+      await _firestore
+          .collection('posts')
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated)
+              ? widget.snap['postId']
+              : widget.chatRoom.id)
+          .update({"likes": []});
+      setState(() {
+        _isRoomRemoved = true;
       });
     }
   }
@@ -100,6 +142,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   Widget build(BuildContext context) {
     var provider = context.watch<UserProvider>();
+    user = provider.getUser.uid;
     // if(_isLoading){
     //   return SafeArea(
     //     child: Container(
@@ -117,6 +160,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     //     ),
     //   );
     // }
+    if (_isRoomRemoved) {
+      Navigator.pop(context);
+    }
     return GestureDetector(
       onTap: () {
         // FocusScope.of(context).unfocus();
@@ -139,7 +185,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               StreamBuilder<QuerySnapshot>(
                 stream: _firestore
                     .collection('chatRooms')
-                    .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? widget.snap['postId'] : widget.chatRoom.id)
+                    .doc(((widget.chatRoom.id == null) && _isRoomCreated)
+                        ? widget.snap['postId']
+                        : widget.chatRoom.id)
                     .collection('messages')
                     .orderBy("timestamp", descending: true)
                     .snapshots(),
@@ -227,8 +275,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                             "차단하기",
                           )),
                       CupertinoActionSheetAction(
-                          onPressed: () {
-                            setState(() {});
+                          onPressed: () async {
+                            if (widget.snap["uid"] != user) {
+                              removeChatRoom();
+                            }
                           },
                           child: Text(
                             "채팅방 나가기",
