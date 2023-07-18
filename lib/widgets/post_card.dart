@@ -39,9 +39,11 @@ class _PostCardState extends State<PostCard> {
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     print(snap.data());
     if (snap.exists) {
-      setState(() {
-        username = (snap.data() as Map<String, dynamic>)['username'];
-      });
+      if(this.mounted){
+        setState(() {
+          username = (snap.data() as Map<String, dynamic>)['username'];
+        });
+      }
     } else {
       // 문서가 존재하지 않는 경우 처리
     }

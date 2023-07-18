@@ -70,9 +70,11 @@ class _AddDialogState extends State<AddDialog> {
 
     // Location permission is granted, retrieve current location
     LocationData? locationData = await location.getLocation();
-    setState(() {
-      _currentLocation = locationData;
-    });
+    if(this.mounted){
+      setState(() {
+        _currentLocation = locationData;
+      });
+    }
   }
 
   void postImage(

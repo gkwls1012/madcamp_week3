@@ -34,9 +34,11 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   }
 
   void onPageChanged(int page){
-    setState(() {
-      _page = page;
-    });
+    if(this.mounted){
+      setState(() {
+        _page = page;
+      });
+    }
   }
 
   @override

@@ -31,9 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
-    setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
-    });
+    if(this.mounted){
+      setState(() {
+        username = (snap.data() as Map<String, dynamic>)['username'];
+      });
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {

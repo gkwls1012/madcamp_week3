@@ -46,9 +46,11 @@ class _FeedScreenState extends State<FeedScreen> {
 
     LocationData? locationData = await location.getLocation();
     if (locationData != null) {
-      setState(() {
-        _currentLocation = locationData;
-      });
+      if(this.mounted){
+        setState(() {
+          _currentLocation = locationData;
+        });
+      }
     }
   }
 
