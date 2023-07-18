@@ -75,6 +75,45 @@ class _HomeScreenState extends State<HomeScreen> {
     return markers;
   }
 
+  void showInfo() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: 300, // Set the desired width
+            height: 310, // Set the desired height
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                SizedBox(height:10, ),
+
+                Image.asset('assets/info.png'),
+                // Replace 'assets/image.png' with the path to your image
+
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      '닫기',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -137,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 15),
 
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 내가 준 도움
                     Container(
@@ -235,6 +275,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
+                    IconButton(
+                      onPressed: showInfo,
+                      icon: Icon(Icons.info, color: Colors.white),
+                    )
                   ],
                 ),
                 Divider(),
@@ -252,8 +296,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.all(5),
                         child: Row(
                           children: [
-                            SizedBox(width:5),
-                            Image(image: AssetImage('assets/check.jpg'), width: 30,),
+                            SizedBox(width: 5),
+                            Image(
+                              image: AssetImage('assets/check.jpg'),
+                              width: 30,
+                            ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Text(
@@ -321,8 +368,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.all(5),
                         child: Row(
                           children: [
-                            SizedBox(width:5),
-                            Image(image: AssetImage('assets/megaphone.jpg'), width: 30,),
+                            SizedBox(width: 5),
+                            Image(
+                              image: AssetImage('assets/megaphone.jpg'),
+                              width: 30,
+                            ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Text(

@@ -21,6 +21,17 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool _isLoading = false;
+  String username = "";
+
+  void getinfo(uid) async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    setState(() {
+      username = (snap.data() as Map<String, dynamic>)['username'];
+    });
+  }
 
   void _deletePost(BuildContext context) async {
     // Show confirmation dialog
@@ -77,6 +88,7 @@ class _PostCardState extends State<PostCard> {
     String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
     var date = dateString;
     bool mine = (widget.snap['uid'] == widget.uid);
+    getinfo(widget.snap['uid']);
 
     return Card(
       color: Colors.white.withOpacity(0.85),
@@ -189,7 +201,7 @@ class _PostCardState extends State<PostCard> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      widget.snap['username'] + ' 님이  ' + date + '에 요청한 도움',
+                      username + ' 님이  ' + date + '에 요청한 도움',
                       style: const TextStyle(fontSize: 14, color: primaryColor),
                     ),
                   ),
