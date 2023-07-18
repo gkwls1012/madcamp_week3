@@ -91,6 +91,24 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
             "likes": [user]
           });
 
+          await _firestore.collection('users').doc(user).update({
+            "giving": FieldValue.arrayUnion([
+              {
+                "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+                "postName": widget.chatRoom.name
+              }
+            ])
+          });
+
+          await _firestore.collection('users').doc(widget.snap["uid"]).update({
+            "receiving": FieldValue.arrayUnion([
+              {
+                "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+                "postName": widget.chatRoom.name
+              }
+            ])
+          });
+
           setState(() {
             _isRoomCreated = true;
           });
@@ -126,6 +144,17 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               ? widget.snap['postId']
               : widget.chatRoom.id)
           .update({"likes": []});
+      await _firestore.collection('users').doc(user).update({
+        "giving": FieldValue.arrayRemove([
+          {"postId": widget.chatRoom.id ?? widget.snap['postId'], "postName": widget.chatRoom.name}
+        ])
+      });
+
+      await _firestore.collection('users').doc(widget.snap["uid"]).update({
+        "receiving": FieldValue.arrayRemove([
+          {"postId": widget.chatRoom.id ?? widget.snap['postId'], "postName": widget.chatRoom.name}
+        ])
+      });
       setState(() {
         _isRoomRemoved = true;
       });
@@ -275,14 +304,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       //     child: Text(
                       //       "차단하기",
                       //     )),
-                      if(widget.snap["uid"] == user)
-                      CupertinoActionSheetAction(
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          child: Text(
-                            "완료하기",
-                          )),
+                      if (widget.snap["uid"] == user)
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: Text(
+                              "완료하기",
+                            )),
                       CupertinoActionSheetAction(
                           onPressed: () async {
                             removeChatRoom();

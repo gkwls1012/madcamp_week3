@@ -18,7 +18,7 @@ class User {
     required this.give,
     required this.receive,
     required this.giving,
-    required this.receiving,
+    required this.receiving
   });
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +28,8 @@ class User {
     "bio": bio,
     "give": give,
     "receive": receive,
+    "giving": giving,
+    "receiving": receiving,
     "giving": giving,
     "receiving": receiving,
   };
