@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom chatRoom;
-  final String? recipient;
-  const ChatRoomPage({required this.chatRoom, this.recipient, super.key});
+  final dynamic snap;
+  const ChatRoomPage({required this.chatRoom, this.snap, super.key});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -20,7 +20,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final _chatFocusNode = FocusNode();
 
   bool _isRoomCreated = false;
-  String? roomId;
 
   @override
   void initState() {
@@ -40,7 +39,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       _chatController.clear();
       final messageCollectionReference = _firestore
           .collection('chatRooms')
-          .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? roomId : widget.chatRoom.id)
+          .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? widget.snap['postId'] : widget.chatRoom.id)
           .collection('messages')
           .doc();
       await messageCollectionReference.set(
@@ -53,27 +52,40 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     if (content.trim().isNotEmpty) {
       _chatController.clear();
       // 상위 컬렉션 참조
-      CollectionReference chatRoomsRef = _firestore.collection('chatRooms');
+      final chatRoomsRef = _firestore.collection('chatRooms').doc(widget.snap['postId']);
 
-      // 상위 컬렉션에 새로운 문서 추가
-      DocumentReference newDocumentRef = await chatRoomsRef.add({
-        "name": widget.chatRoom.name,
-        "participants": [user, widget.recipient],
-      });
+      await chatRoomsRef.get().then((docSnapshot) async{
+        if (docSnapshot.exists) {
+          // 문서가 존재하는 경우
+          print('문서가 존재합니다.');
+        } else {
+          // 문서가 존재하지 않는 경우
+          print('문서가 존재하지 않습니다.');
+          // 상위 컬렉션에 새로운 문서 추가
+          await chatRoomsRef.set({
+            "name": widget.chatRoom.name,
+            "participants": [user, widget.snap['uid']],
+          });
 
-      // 하위 컬렉션 참조
-      CollectionReference messagesRef = newDocumentRef.collection('messages');
+          // 하위 컬렉션 참조
+          CollectionReference messagesRef = chatRoomsRef.collection('messages');
 
-      // 하위 컬렉션에 새로운 문서 추가
-      await messagesRef.add({
-        'content': content,
-        'sender': user,
-        'timestamp': DateTime.now(),
-      });
+          // 하위 컬렉션에 새로운 문서 추가
+          await messagesRef.add({
+            'content': content,
+            'sender': user,
+            'timestamp': DateTime.now(),
+          });
 
-      setState(() {
-        _isRoomCreated = true;
-        roomId = newDocumentRef.id;
+          await _firestore
+                .collection('posts')
+                .doc(widget.snap['postId'])
+                .update({"likes": [user]});
+
+          setState(() {
+            _isRoomCreated = true;
+          });
+        }
       });
     }
   }
@@ -127,7 +139,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               StreamBuilder<QuerySnapshot>(
                 stream: _firestore
                     .collection('chatRooms')
-                    .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? roomId : widget.chatRoom.id)
+                    .doc(((widget.chatRoom.id == null) && _isRoomCreated) ? widget.snap['postId'] : widget.chatRoom.id)
                     .collection('messages')
                     .orderBy("timestamp", descending: true)
                     .snapshots(),

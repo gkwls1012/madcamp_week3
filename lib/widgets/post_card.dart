@@ -138,22 +138,27 @@ class _PostCardState extends State<PostCard> {
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: blueColor2,
+                        color: widget.snap['likes'].isEmpty
+                            ? blueColor2
+                            : primaryColor,
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatRoomPage(
-                                chatRoom: ChatRoom(id: null, name: widget.snap['title']),
-                                recipient: widget.snap['uid'],
-                              ),
-                            ),
-                          );
+                          widget.snap['likes'].isEmpty
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatRoomPage(
+                                      chatRoom: ChatRoom(
+                                          id: null, name: widget.snap['title']),
+                                      snap: widget.snap,
+                                    ),
+                                  ),
+                                )
+                              : null;
                         },
                         child: Text(
-                          '도와주기',
+                          widget.snap['likes'].isEmpty ? '도와주기' : '도움중',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
