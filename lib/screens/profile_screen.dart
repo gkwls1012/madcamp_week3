@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/utils/colors.dart';
 
 import '../utils/utils.dart';
@@ -119,6 +117,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  bool isContainer1Visible = true;
+
+  void toggleContainer() {
+    setState(() {
+      isContainer1Visible = !isContainer1Visible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,105 +150,255 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      username,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      ' 님',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
+                    SizedBox(width: 20),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              username,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              ' 님',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
 
-                //이메일주소
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '이메일 주소: $email',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 5),
-                //한줄소개
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '한 줄 소개: $bio',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      margin: EdgeInsets.only(top: 10, right: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                      child: TextButton(
-                        onPressed: editProfile,
-                        child: Text(
-                          ' 프로필편집 ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        //이메일주소
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '이메일 주소: $email',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      margin: EdgeInsets.only(top: 10, right: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                      child: TextButton(
-                        onPressed: logout,
-                        child: Text(
-                          ' 로그아웃 ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(height: 5),
+                        //한줄소개
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '한 줄 소개: $bio',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 100,
+                              margin: EdgeInsets.only(top: 10, right: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              child: TextButton(
+                                onPressed: editProfile,
+                                child: Text(
+                                  ' 프로필편집 ',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 100,
+                              margin: EdgeInsets.only(top: 10, right: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              child: TextButton(
+                                onPressed: logout,
+                                child: Text(
+                                  ' 로그아웃 ',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
+                       SizedBox(width: 20),
+                       Expanded(
+                         child: GestureDetector(
+                           onTap: toggleContainer,
+                           child: isContainer1Visible
+                               ? Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            padding: EdgeInsets.only(bottom: 10, top: 10),
+                            margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '내가 준 도움',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                      size: 12,
+                                    ),
+                                    Text(
+                                      '5 / Lv.1',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Expanded(
+                                    child: Image.asset(
+                                      'assets/toll.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                               : Container(
+                             decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.all(Radius.circular(20)),
+                             ),
+                             padding: EdgeInsets.only(bottom: 10, top: 10),
+                             margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                             child: Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Text(
+                                   '내가 받은 도움',
+                                   style: TextStyle(
+                                     fontWeight: FontWeight.bold,
+                                     color: Colors.black,
+                                   ),
+                                 ),
+                                 SizedBox(height: 5),
+                                 Row(
+                                   mainAxisAlignment: MainAxisAlignment.center,
+                                   children: [
+                                     Icon(
+                                       Icons.favorite,
+                                       color: Colors.red,
+                                       size: 12,
+                                     ),
+                                     Text(
+                                       '12 / Lv.2',
+                                       style: TextStyle(
+                                         color: Colors.black,
+                                       ),
+                                     ),
+                                   ],
+                                 ),
+                                 Padding(
+                                   padding: EdgeInsets.all(5),
+                                   child: Expanded(
+                                     child: Image.asset(
+                                       'assets/baeby.gif',
+                                       fit: BoxFit.contain,
+                                     ),
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ),
+                       ),
+
+
+
+                       ),
+
+],
                 ),
                 SizedBox(height: 20),
                 Divider(),
                 SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        //내가 준 도움 기록
+                        Container(
+                            width: 240,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image(image: AssetImage('assets/tape.png')),
+                                Text('내가 준 도움 기록',),
+                              ],
+                            )
+
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        //내가 받은 도움 기록
+                        Container(
+                            width: 240,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image(image: AssetImage('assets/tape.png')),
+                                Text('내가 받은 도움 기록',),
+                              ],
+                            )
+
+                        ),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),

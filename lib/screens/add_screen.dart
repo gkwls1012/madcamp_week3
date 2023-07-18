@@ -1,16 +1,11 @@
-import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:untitled/resources/firestore_methods.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/utils/utils.dart';
-import '../models/user.dart' as model;
-import '../providers/user_provider.dart';
-import 'chat_list_screen.dart'; // Import the ChatScreen
 
 class AddDialog extends StatefulWidget {
   const AddDialog({Key? key}) : super(key: key);

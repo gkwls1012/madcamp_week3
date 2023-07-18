@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:math';
 import '../utils/colors.dart';
 
 void main() => runApp(const HomeScreen());
@@ -114,6 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -180,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // 내가 준 도움
                     Container(
-                      width: 150,
+                      width: 135,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // 내가 받은 도움
                     Container(
-                      width: 150,
+                      width: 135,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
