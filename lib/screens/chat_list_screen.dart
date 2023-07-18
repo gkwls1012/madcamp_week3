@@ -136,7 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   color: Colors.black,
                                 ),
                                 title: Text(name),
-                                subtitle: Text(lastMessage['content']),
+                                subtitle: Text(lastMessage == null ? "" : lastMessage['content']),
                                 additionalInfo: Text(
                                   DateTime.now().toString(),
                                   style: TextStyle(fontSize: 12),

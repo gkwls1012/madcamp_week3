@@ -275,7 +275,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       //     child: Text(
                       //       "차단하기",
                       //     )),
-                      // if(widget.snap["uid"] == user)
+                      if(widget.snap["uid"] == user)
                       CupertinoActionSheetAction(
                           onPressed: () {
                             setState(() {});
