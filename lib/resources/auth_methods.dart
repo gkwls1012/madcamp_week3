@@ -43,7 +43,9 @@ class AuthMethods {
             username: username,
             bio: bio,
             give: [],
-            receive: []);
+            receive: [],
+            giving: [],
+            receiving: []);
         //add user to our database
         await _firestore.collection('users').doc(cred.user!.uid).set(
               user.toJson(),

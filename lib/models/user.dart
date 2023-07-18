@@ -7,6 +7,8 @@ class User {
   final String bio;
   final List give;
   final List receive;
+  final List giving;
+  final List receiving;
 
   const User({
     required this.email,
@@ -15,6 +17,8 @@ class User {
     required this.bio,
     required this.give,
     required this.receive,
+  required this.giving,
+  required this.receiving,
   });
 
   Map<String, dynamic> toJson() => {
@@ -24,6 +28,8 @@ class User {
     "bio": bio,
     "give": give,
     "receive": receive,
+    "giving": giving,
+    "receiving": receiving,
   };
 
   static User fromSnap(DocumentSnapshot snap){
@@ -36,6 +42,8 @@ class User {
       bio: snapshot['bio'], //한줄소개
       give: snapshot['give'],
       receive: snapshot['receive'],
+      giving: snapshot['giving'],
+      receiving: snapshot['receiving'],
     );
   }
 }
