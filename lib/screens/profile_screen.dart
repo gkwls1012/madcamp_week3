@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/screens/recieve_list_screen.dart';
 import 'package:untitled/utils/colors.dart';
 import '../utils/utils.dart';
 import 'login_screen.dart';
@@ -265,10 +264,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Image(image: AssetImage('assets/tape.png')),
                           TextButton(onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Recieve()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => Recieve()),
+                            // );
                           }, child: Text('내가 준 도움 기록')),
                         ],
                   ),
