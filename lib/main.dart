@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/providers/user_provider.dart';
 import 'package:untitled/responsive/responsive_layout_screen.dart';
-import 'package:untitled/screens/add_screen.dart';
 import 'package:untitled/screens/login_screen.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/responsive/mobile_screen_layout.dart';
 import 'package:untitled/responsive/web_screen_layout.dart';
-import 'package:untitled/screens/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

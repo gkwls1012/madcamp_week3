@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/models/chatroom.dart';
-import 'package:untitled/models/user.dart';
 import 'package:untitled/screens/chat_room_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:untitled/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 

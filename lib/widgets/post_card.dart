@@ -1,18 +1,23 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled/screens/chat_room_screen.dart';
 import 'package:untitled/models/chatroom.dart';
 
-import '../utils/utils.dart';
-
 class PostCard extends StatefulWidget {
   final snap;
   final String uid;
+  final double latitude;
+  final double longitude;
 
-  const PostCard({Key? key, required this.snap, required this.uid})
+  const PostCard(
+      {Key? key,
+      required this.snap,
+      required this.uid,
+      required this.latitude,
+      required this.longitude})
       : super(key: key);
 
   @override
@@ -24,10 +29,8 @@ class _PostCardState extends State<PostCard> {
   String username = "";
 
   void getinfo(uid) async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
     setState(() {
       username = (snap.data() as Map<String, dynamic>)['username'];
     });
@@ -81,6 +84,33 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const int earthRadius = 6371; // in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    double lat1Rad = degreesToRadians(lat1);
+    double lon1Rad = degreesToRadians(lon1);
+    double lat2Rad = degreesToRadians(lat2);
+    double lon2Rad = degreesToRadians(lon2);
+
+    // Calculate the differences between the latitudes and longitudes
+    double dLat = lat2Rad - lat1Rad;
+    double dLon = lon2Rad - lon1Rad;
+
+    // Apply the Haversine formula
+    double a = pow(sin(dLat / 2), 2) +
+        cos(lat1Rad) * cos(lat2Rad) * pow(sin(dLon / 2), 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    // Calculate the distance
+    double distance = earthRadius * c;
+    return distance;
+  }
+
+  double degreesToRadians(double degrees) {
+    return degrees * pi / 180;
+  }
+
   @override
   Widget build(BuildContext context) {
     Timestamp timestamp = widget.snap['datePublished'];
@@ -89,7 +119,8 @@ class _PostCardState extends State<PostCard> {
     var date = dateString;
     bool mine = (widget.snap['uid'] == widget.uid);
     getinfo(widget.snap['uid']);
-
+    double dist = calculateDistance(widget.snap['latitude'],
+        widget.snap['longitude'], widget.latitude, widget.longitude);
     return Card(
       color: Colors.white.withOpacity(0.85),
       shape: RoundedRectangleBorder(
@@ -110,22 +141,27 @@ class _PostCardState extends State<PostCard> {
                     image: AssetImage('assets/wavinghand.png'),
                     width: 25,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.snap['title'],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.snap['title'],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ],
                     ),
                   ),
+                  SizedBox(width: 10),
+                  Expanded(
+                      child: (dist < 1)
+                          ? Text((dist * 1000).toStringAsFixed(2) + 'm',
+                              style: TextStyle(color: Colors.orange))
+                          : Text(dist.toStringAsFixed(2) + 'km',
+                              style: TextStyle(color: Colors.orangeAccent))),
                   if (mine)
                     Container(
                       margin: EdgeInsets.only(right: 10),
@@ -158,7 +194,8 @@ class _PostCardState extends State<PostCard> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChatRoomPage(
-                                chatRoom: ChatRoom(id: null, name: widget.snap['title']),
+                                chatRoom: ChatRoom(
+                                    id: null, name: widget.snap['title']),
                                 recipient: widget.snap['uid'],
                               ),
                             ),

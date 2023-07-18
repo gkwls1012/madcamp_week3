@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:untitled/resources/auth_methods.dart';
 import 'package:untitled/screens/signup_screen.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/utils/utils.dart';
 import 'package:untitled/widgets/text_field_input.dart';
-
-import '../models/user.dart';
-import '../providers/user_provider.dart';
 import '../responsive/mobile_screen_layout.dart';
 import '../responsive/responsive_layout_screen.dart';
 import '../responsive/web_screen_layout.dart';

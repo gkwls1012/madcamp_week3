@@ -1,7 +1,5 @@
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:untitled/resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/post.dart';

@@ -5,10 +5,6 @@ import 'package:untitled/resources/auth_methods.dart';
 import 'package:untitled/utils/colors.dart';
 import 'package:untitled/widgets/text_field_input.dart';
 import 'package:untitled/utils/utils.dart';
-
-import '../responsive/mobile_screen_layout.dart';
-import '../responsive/responsive_layout_screen.dart';
-import '../responsive/web_screen_layout.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -23,7 +19,6 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  Uint8List? _image;
   bool _isLoading = false;
 
   @override
@@ -35,12 +30,6 @@ class _SignupScreenState extends State<SignupScreen> {
     _usernameController.dispose();
   }
 
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
 
   void signUpUser() async {
     setState(() {
@@ -51,7 +40,6 @@ class _SignupScreenState extends State<SignupScreen> {
       password: _passwordController.text,
       username: _usernameController.text,
       bio: _bioController.text,
-      //file: _image!,
     );
 
     if (res != 'success') {
