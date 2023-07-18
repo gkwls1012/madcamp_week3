@@ -39,7 +39,7 @@ class _PostCardState extends State<PostCard> {
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     print(snap.data());
     if (snap.exists) {
-      if(this.mounted){
+      if (this.mounted) {
         setState(() {
           username = (snap.data() as Map<String, dynamic>)['username'];
         });
@@ -89,6 +89,123 @@ class _PostCardState extends State<PostCard> {
       } catch (e) {
         // Error occurred while deleting the post
         print('Error deleting post: $e');
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _donePost(BuildContext context) async {
+    final DateTime doneDate = DateTime.now();
+    var _firestore = FirebaseFirestore.instance;
+    // Show confirmation dialog
+    bool confirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('확인'),
+          content: Text('정말로 이 요청을 완료하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel deletion
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm deletion
+              },
+              child: Text('완료'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        // 대상 문서의 참조를 가져오는 코드
+        DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+            .collection("chatRooms")
+            .doc(widget.snap['postId'])
+            .get();
+
+        // 문서의 데이터에서 필드 값을 추출하는 코드
+        String helpUid = snapshot.data()?["participants"][1];
+
+        // 채팅방 삭제
+        await _firestore
+            .collection('chatRooms')
+            .doc(widget.snap['postId'])
+            .delete();
+        // 해당 문서에 포함된 모든 컬렉션 가져오기
+        QuerySnapshot collectionSnapshot = await _firestore
+            .collection('chatRooms')
+            .doc(widget.snap['postId'])
+            .collection('messages')
+            .get();
+
+        // 각 컬렉션의 문서를 하나씩 삭제
+        collectionSnapshot.docs.forEach((doc) async {
+          await doc.reference.delete();
+        });
+
+        await _firestore
+            .collection('posts')
+            .doc(widget.snap['postId'])
+            .update({"likes": []});
+
+        await _firestore.collection('users').doc(helpUid).update({
+          "giving": FieldValue.arrayRemove([
+            {
+              "postId": widget.snap['postId'],
+              "postName": widget.snap['title']
+            }
+          ])
+        });
+
+        await _firestore.collection('users').doc(widget.snap["uid"]).update({
+          "receiving": FieldValue.arrayRemove([
+            {
+              "postId": widget.snap['postId'],
+              "postName": widget.snap['title']
+            }
+          ])
+        });
+
+        await _firestore.collection('users').doc(helpUid).update({
+          "give": FieldValue.arrayUnion([
+            {
+              "postId": widget.snap['postId'],
+              "doneDate": doneDate
+            }
+          ])
+        });
+
+        await _firestore.collection('users').doc(widget.snap["uid"]).update({
+          "receive": FieldValue.arrayUnion([
+            {
+              "postId": widget.snap['postId'],
+              "doneDate": doneDate
+            }
+          ])
+        });
+
+        await FirebaseFirestore.instance
+                .collection('posts')
+                .doc(widget.snap['postId'])
+                .delete();
+            // Post deleted successfully
+      } catch (e) {
+        // Error occurred while deleting the post
+        print('Error done post: $e');
       }
 
       setState(() {
@@ -185,7 +302,7 @@ class _PostCardState extends State<PostCard> {
                             : Colors.lightGreen,
                       ),
                       child: TextButton(
-                        onPressed: () => _deletePost(context),
+                        onPressed: () => widget.snap['likes'].isEmpty ? _deletePost(context) : _donePost(context),
                         child: _isLoading
                             ? Center(
                                 child: CircularProgressIndicator(
