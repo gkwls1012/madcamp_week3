@@ -18,6 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(37.5665, 126.9780);
   String username = "";
+  List give = [];
+  List receive = [];
+  List giving = [];
+  List receiving = [];
+
 
   @override
   void initState() {
@@ -34,6 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if(this.mounted){
       setState(() {
         username = (snap.data() as Map<String, dynamic>)['username'];
+        give = (snap.data() as Map<String, dynamic>)['give'];
+        receive = (snap.data() as Map<String, dynamic>)['receive'];
+        giving = (snap.data() as Map<String, dynamic>)['giving'];
+        receiving = (snap.data() as Map<String, dynamic>)['receiving'];
       });
     }
   }
@@ -201,30 +210,63 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          (give.length<10)?Column(
                             children: [
-                              Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 12,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    give.length.toString()+' / Lv.1',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                '5 / Lv.1',
-                                style: TextStyle(
-                                  color: Colors.black,
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Expanded(
+                                  child: Image.asset(
+                                    'assets/toll.gif',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Expanded(
-                              child: Image.asset(
-                                'assets/toll.gif',
-                                fit: BoxFit.contain,
+                          )
+                              :Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    give.length.toString()+' / Lv.2',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Expanded(
+                                  child: Image.asset(
+                                    'assets/baeby.gif',
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -250,30 +292,63 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          (receive.length<10)?Column(
                             children: [
-                              Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 12,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    receive.length.toString()+' / Lv.1',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                '12 / Lv.2',
-                                style: TextStyle(
-                                  color: Colors.black,
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Expanded(
+                                  child: Image.asset(
+                                    'assets/toll.gif',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Expanded(
-                              child: Image.asset(
-                                'assets/baeby.gif',
-                                fit: BoxFit.contain,
+                          )
+                              :Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    receive.length.toString()+' / Lv.2',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Expanded(
+                                  child: Image.asset(
+                                    'assets/baeby.gif',
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -287,9 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Divider(),
                 SizedBox(height: 10),
                 //진행 중인 도움
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+                Row(
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -318,46 +391,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(20),
+                      SizedBox(width: 10),
+                      (giving.length==0)? Text('없음'):Expanded(child:Container(
+                        height: 40,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: giving.length,
+                          itemBuilder: (context, index) {
+                            final item = giving[index]['postName'];
+                            return Container(
+                              margin: EdgeInsets.all(8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal:8),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Text(
+                                    item,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                            );
+                          },
                         ),
-                        padding: EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Text(
-                            '아이스크림',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Text(
-                            '2시에 깨워주세요ㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
+                      ),),
+
                     ],
                   ),
-                ),
                 SizedBox(height: 5),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -390,42 +458,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(20),
+                      SizedBox(width: 10),
+                      (receiving.length==0)? Text('없음'): Expanded(child:Container(
+                        height: 40,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: receiving.length,
+                          itemBuilder: (context, index) {
+                            final item = receiving[index]['postName'];
+                            return Container(
+                              margin: EdgeInsets.all(8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal:8),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Text(
+                                    item,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                            );
+                          },
                         ),
-                        padding: EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Text(
-                            '아이스크림',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Text(
-                            '2시에 깨워주세요ㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
+                      ),),
                     ],
                   ),
                 ),
