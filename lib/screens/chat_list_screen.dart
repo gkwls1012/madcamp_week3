@@ -134,7 +134,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                 leading: Container(
                                   width: 40,
                                   height: 40,
-                                  color: Colors.black,
+                                  color: Colors.white,
+                                  child: Image(
+                                    image: AssetImage('assets/wavinghand.png'),
+                                    width: 25,
+                                  ),
                                 ),
                                 title: Text(name),
                                 subtitle: Text(lastMessage == null ? "" : lastMessage['content']),
