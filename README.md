@@ -4,98 +4,126 @@
 
 > Flutter, Firebase
 
-|로그인|프로필|좋아요|설정|
-|--|--|--|--|
-|<img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/40f1dd00-2014-4ccf-8686-3d7816b53eb8" width="200" height="400">|<img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/cc5d91ad-ae88-48e9-b4c4-5c335fd8566f" width="200" height="400">|<img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/fbea1eaf-3b7e-4924-a168-6b63222ac086" width="200" height="400">|<img src = "https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/281593f0-a67d-4a57-8bb4-30ac659f2eb6" width = "200" height = "400">|
+|로그인|홈|피드|채팅|프로필|
+|--|--|--|--|--|
+|<img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/cdd08dfd-902b-47fc-8704-61341c06dec7" width="200" height="400">|<img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/210a157b-22fe-4181-b658-34b10a1cf8b9" width="200" height="400">|<img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/54ac7ab0-c337-4af6-9481-6c666ecca2cd" width="200" height="400">|<img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/26c77595-6a48-440d-a239-362b598ddecf" width = "200" height = "400">|<img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/2538ccbe-4669-4fa0-ae16-2fa89ddf2f7b" width = "200" height = "400">|
 
 ## 로그인
-> 회원가입을 통한 일반 로그인과 카카오톡을 통한 로그인이 가능합니다.
+> 회원가입을 통한 로그인이 가능합니다.
 
 - ### 회원가입
 
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/19d6412e-f5d2-4484-b386-16e12a01279b" width="200" height="400">
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/8e292b40-7805-464c-9432-3ebe34fa49e9" width="200" height="400">
 
-   - 원하는 아이디와 비밀번호를 입력할 수 있음
-   - 아이디가 중복되지 않고, 아이디와 비밀번호가 올바르면 회원가입 버튼을 눌러 아이디와 비밀번호를 데이터베이스에 저장할 수 있음
+   - 닉네임, 이메일주소, 비밀번호, 한줄소개를 입력할 수 있음
+   - 이메일주소는 이메일 형식에 맞게, 비밀번호는 6자리 이상으로 입력하면 회원가입하기 버튼을 눌러 아이디와 비밀번호를 데이터베이스에 저장할 수 있음
 
 - ### 로그인 
 
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/40f1dd00-2014-4ccf-8686-3d7816b53eb8" width="200" height="400"><img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/0b71924c-d8fc-442a-9c3f-a74dbf6f4b2b" width="200" height="400"><img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/de0c12b7-3ce1-48f0-b746-41af769335a2" width="200" height="400">
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/cdd08dfd-902b-47fc-8704-61341c06dec7" width="200" height="400">
+
   - 가입했던 계정 아이디와 비밀번호를 올바르게 입력하고 로그인 버튼을 누르면 로그인 할 수 있음
-  - 가입 후 첫 로그인시 회원정보를 입력하는 페이지가 나타남 
-  - 첫번째 회원정보 페이지에서 해당 정보를 입력하고 다음 페이지에서 관심 분야를 모두 체크하면 메인 페이지로 넘어갈 수 있음
+  - 로그인에 성공시 홈화면으로 넘어감
 
-- ### 카카오톡으로 로그인
+
+## Tab1 : 홈
+> 내가 준 도움, 내가 받은 도움 수에 따른 캐릭터를 볼 수 있습니다.
+> 진행중인 도움, 요청중인 도움의 정보를 간단하게 확인할 수 있습니다.
+> 내 주변에서 요청한 도움들을 지도에서 확인할 수 있습니다.
+
+- ### 캐릭터
+
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/38ef6af7-d84d-43cc-90c8-ac3462108534" width="500" height="400">
+
+   - 도움을 주고받으면 캐릭터가 성장함
+   - 홈 화면에서 캐릭터를 확인할 수 있음
+
+- ### 도움 정보
+
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/3ee341ba-6db4-467b-a932-c6396fe12ccc" width="500" height="400">
+
+  - 진행 중인 도움에선 내가 도움을 주고 있는 요청의 이름을 확인할 수 있음
+  - 요청 중인 도움에선 내가 도움을 받고 있는 요청의 이름을 확인할 수 있음
+
+- ### 주변 요청 
   
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/f028711c-1cfd-4cbd-b7cb-1f597835d54e" width="200" height="400">
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/5b95cff6-872f-41af-ad6c-55a3b31ef972" width="500" height="400">
 
-  - 카카오톡으로 로그인 버튼을 눌러 카카오톡 계정을 통해 로그인 할 수 있음
-  - 마찬가지로 첫 로그인시 회원정보 입력 페이지가 나타납니다.
+  - 위치 정보를 통해 현재 내 위치의 주변에서 요청한 도움들을 지도에서 확인할 수 있음
 
+## Tab2 : 피드
+> 피드 Tab에선 유저들이 올린 도움 요청들을 모두 확인할 수 있습니다.
+> 하단 bar의 가운데 + 버튼을 눌러 도움 요청을 등록할 수 있습니다.
+> 도움 요청의 제목, 설명, 올린 사람의 이름, 올린 날짜, 올린 위치와의 거리등을 확인할 수 있습니다.
+> 도와주기 버튼을 눌러 채팅을 시작하며 도움을 줄 수 있습니다.
 
-## Tab1 : 프로필
-> 가입된 유저들을 분반별로 확인할 수 있습니다. 마음에 드는 유저에게 좋아요 버튼을 누를 수 있습니다. 각 유저의 프로필을 터치하여 프로필 상세정보를 확인할 수 있습니다.
-> 네비게이션 바에 검색 필드를 이용해서 원하는 유저를 빠르게 찾을 수 있습니다.
-> 각 유저의 대학교와 전공도 확인할 수 있습니다.
-
-- ### 좋아요 누르기
-
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/dbbd34ac-b894-45ce-8bad-97784cbf56f3" width="200" height="400">
-
-   - 마음에 드는 유저의 프로필에 좋아요를 누를 수 있음
-   - 좋아요 버튼을 다시 눌러서 취소도 가능
-
-- ### 프로필 상세정보 확인하기
-
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/bf31f2b2-4d93-412e-b8a6-7d1658a27ab4" width="200" height="400">
-
-  - 유저의 프로필을 터치하면 해당 유저가 입력했던 회원정보들을 볼 수 있음
-
-- ### 검색하기 
+- ### 도움 요청
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/25442e67-5839-479e-8870-4af83d45d6d4" width = "200" height = "400" >
   
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/81ac18fa-feea-4545-a4b1-56231fedb24e" width="200" height="400">
+  - 도움 요청의 한줄 소개와 내용을 입력하여 도움 요청을 등록할 수 있음
 
-  - 검색창을 통해 검색어를 포함하고 있는 이름을 가진 유저들만 볼 수 있음
-
-## Tab2 : 좋아요
-> 좋아요 Tab은 기본으로 나의 프로필에 좋아요 버튼을 누른 유저들을 확인할 수 있습니다.
-> 마찬가지로 네비게이션 바에 검색 필드를 이용해서 원하는 유저를 빠르게 찾을 수 있으며, 각 유저의 프로필을 터치하여 프로필 상세정보를 확인할 수 있습니다. 또한 우측 상단의 버튼을 눌러 나의 프로필에 좋아요를 누른 유저 목록뿐만 아니라, 내가 좋아요를 누른 프로필의 유저 목록, 서로 좋아요를 누른 유저 목록도 확인할 수 있습니다.
-> 각 유저의 관심 분야도 확인할 수 있습니다.
-- ### 나를 좋아요 한 사람
-  <img src = "https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/99dce61d-1729-4961-9e60-fdfa67166f9f" width = "200" height = "400" >
+- ### 도와주기
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/a2f2ea7e-c498-401b-9844-d3295d22e2f3" width = "500" height = "400" >
   
-  - 좋아요 탭의 기본 화면
-  - 나의 프로필에 좋아요 버튼을 누른 유저들을 확인할 수 있음
-- ### 내가 좋아요 한 사람
-  <img src = "https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/145db436-822a-4b78-ab19-d1a8636d6db5" width="200" height="400">
+  - 도와주고 있는 사람이 없는 타인의 요청
+  - 도와주기 버튼을 누르면 채팅방이 나타남
+  - 채팅을 보내면 채팅방이 생성되고 도움이 진행됨
+  - 버튼이 도움중 버튼으로 바뀜
+
+- ### 도움중
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/37756abb-4cc0-431f-9f45-be3b6f3ed6f3" width="500" height="400">
   
-  - 내가 좋아요 버튼을 누른 프로필의 유저들을 확인할 수 있음
-- ### 서로 좋아요 한 사람
-  <img src = "https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/07fa609e-9a11-4d17-a368-dd6781f6ea91" width="200" height="400">
+  - 도와주고 있는 사람이 있으나 아직 완료되지 않은 타인의 요청
 
-  - 서로의 프로필에 좋아요 버튼을 누른 유저들을 확인할 수 있음
+- ### 삭제하기
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/46864893-5d36-4460-b881-b60645f8d651" width="500" height="400">
 
-- ### 프로필 상세정보 확인하기
+  - 도와주고 있는 사람이 없는 본인의 요청
+  - 삭제하기 버튼을 눌러 요청을 삭제할 수 있음
 
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/bf31f2b2-4d93-412e-b8a6-7d1658a27ab4" width="200" height="400">
+- ### 완료하기
 
-  - 유저의 프로필을 터치하면 해당 유저가 입력했던 회원정보들을 볼 수 있음
+  <img src="https://github.com/gkwls1012/madcamp_week3/assets/98662998/9b951e61-4f93-4e07-b286-0db63592f4f5" width="500" height="400">
 
-- ### 검색하기 
-  
-  <img src="https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/15102261-12dd-4dac-8543-535fa67573bf" width="200" height="400">
+  - 도와주고 있는 사람이 있는 본인의 요청
+  - 완료하기 버튼을 눌러 요청을 완료할 수 있음
+  - 요청을 완료하면 본인과 상대의 도움 기록이 업데이트 됨
 
-  - 검색창을 통해 검색어를 포함하고 있는 이름을 가진 유저들만 볼 수 있음
+## Tab3 : 채팅
 
-## Tab3 : 설정
-
-> 로그아웃 탭을 터치하면 로그아웃을 할 수 있습니다.
-> 개인정보 수정하기 탭을 터치하면 첫 로그인시 나타났던 회원정보 입력 페이지가 나타나며 정보를 수정할 수 있습니다.
+> 본인이 상대의 도움 요청에 도와주기 버튼을 누르거나, 상대가 본인의 도움 요청에 도와주기 버튼을 눌러 채팅을 보내면 채팅방이 생성됩니다.
+> 요청을 완료하지 않고 채팅방을 나가거나, 요청을 완료하며 채팅방을 나갈 수 있습니다.
 
 <br />
 
-- ### 기본 화면
-  <img src = "https://github.com/2023-Summer-MadCamp-KP/FlowLink/assets/98662998/281593f0-a67d-4a57-8bb4-30ac659f2eb6" width = "200" height = "400">
+- ### 채팅방 목록
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/26c77595-6a48-440d-a239-362b598ddecf" width = "200" height = "400">
 
-  - 로그아웃 탭으로 로그아웃시 로그인 화면으로 돌아감
-  - 개인정보 수정하기 탭으로 회원정보 수정 가능
+  - 도움 요청의 이름과 마지막 메세지, 그리고 마지막 메세지가 전송된 시간을 확인할 수 있음
+  - 터치하여 해당 채팅방 화면으로 넘어갈 수 있음
+
+- ### 채팅방
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/4045e47f-a47a-455d-89ad-a492436533cf" width = "200" height = "400"><img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/d13e0e6e-e454-4ad5-bf54-6e3b3d875bbb" width = "200" height = "400"><img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/c8013c44-82f5-48d6-a8a8-4e4681565d51" width = "200" height = "400">
+
+  - 자유롭게 채팅을 보낼 수 있음
+  - 오른쪽 상단의 버튼을 누르면 두가지 화면을 볼 수 있음
+  - 상대가 요청한 도움일 경우 채팅방 나가기 버튼만 있음
+  - 본인이 요청한 도움일 경우 채팅방 나가기 버튼과 완료하기 버튼이 모두 있음
+  - 채팅방 나가기 버튼을 누르면 도움 요청이 완료되지 않은 채 채팅방이 사라지고 도움이 중단됨
+  - 완료하기 버튼을 누르면 도움 요청이 완료되며 채팅방이 사라짐
+
+## Tab4 : 프로필
+> 프로필 Tab에선 회원가입시 입력한 정보들을 확인할 수 있습니다.
+> 프로필 편집과 로그아웃이 가능합니다.
+> 도움 기록 정보를 확인할 수 있습니다.
+
+- ### 프로필 편집
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/5c569ae7-4371-4725-81db-9f78a63e3443" width = "200" height = "400" >
+  
+  - 프로필 편집 버튼을 눌러 회원가입시 입력한 정보들을 수정할 수 있음
+
+- ### 도움 기록
+  <img src = "https://github.com/gkwls1012/madcamp_week3/assets/98662998/9d052db9-4424-4c34-9675-ca70de61633a" width = "200" height = "400" >
+  
+  - 내가 준 도움 기록 버튼과 내가 받은 도움 기록 버튼을 눌러 각각의 목록들을 확인할 수 있음
+  - 도움 요청의 이름과 도움 요청이 완료된 날짜를 확인할 수 있음
