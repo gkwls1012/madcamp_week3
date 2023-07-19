@@ -409,13 +409,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.symmetric(horizontal:8),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Text(
+                                  child: Center(child:Text(
                                     item,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
                                     ),
-                                  ),
+                                  ),)
                                 ),
                               ),
 
@@ -476,13 +476,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.symmetric(horizontal:8),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Text(
+                                  child: Center(child:Text(
                                     item,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
                                     ),
-                                  ),
+                                  )),
                                 ),
                               ),
 
