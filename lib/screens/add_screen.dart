@@ -128,7 +128,8 @@ class _AddDialogState extends State<AddDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Container(
+      child: SingleChildScrollView(
+        child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [blueColor2, Colors.blue],
@@ -200,6 +201,7 @@ class _AddDialogState extends State<AddDialog> {
 
           ],
         ),
+      ),
       ),
     );
   }
