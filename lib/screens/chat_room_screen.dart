@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:untitled/models/chatroom.dart';
 import 'package:untitled/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/utils/colors.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom chatRoom;
@@ -229,13 +230,17 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          leading: CupertinoNavigationBarBackButton(
+            color: primaryColor,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           middle: Text(widget.chatRoom.name),
           trailing: CupertinoButton(
             onPressed: () {
               _showCategory(context);
             },
             padding: EdgeInsets.zero,
-            child: Icon(CupertinoIcons.ellipsis_vertical),
+            child: Icon(CupertinoIcons.ellipsis_vertical, color: primaryColor,),
           ),
         ),
         child: SafeArea(
@@ -294,7 +299,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     ),
                     SizedBox(width: 8.0),
                     CupertinoButton(
-                      child: Icon(Icons.send),
+                      child: Icon(Icons.send, color: primaryColor,),
                       onPressed: () {
                         _isRoomCreated
                             ? createData(
@@ -382,7 +387,7 @@ class ChatBubble extends StatelessWidget {
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
-          color: isMe ? Colors.blue : Colors.grey.shade200,
+          color: isMe ? primaryColor : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(8.0),
         ),
         padding: EdgeInsets.all(8.0),
