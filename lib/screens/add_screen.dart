@@ -27,9 +27,9 @@ class _AddDialogState extends State<AddDialog> {
 
   @override
   void initState() {
-    super.initState();
     getinfo();
     requestLocationPermission();
+    super.initState();
   }
 
   void getinfo() async {

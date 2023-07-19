@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/colors.dart';
 import '../utils/utils.dart';
+import 'give_screen.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String uid = "";
   String email = "";
   String bio = "";
+  List give = [];
+  List receive = [];
 
   @override
   void initState() {
@@ -34,6 +37,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       uid = (snap.data() as Map<String, dynamic>)['uid'];
       email = (snap.data() as Map<String, dynamic>)['email'];
       bio = (snap.data() as Map<String, dynamic>)['bio'];
+      give = (snap.data() as Map<String, dynamic>)['give'];
+      receive= (snap.data() as Map<String, dynamic>)['receive'];
+
     });
   }
 
@@ -121,13 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> stringList = [
-      'String 1',
-      'String 2',
-      'String 3',
-      'String 4',
-      'String 5'
-    ];
+
     return Scaffold(
         body: Container(
       width: double.infinity,
@@ -264,12 +264,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Image(image: AssetImage('assets/tape.png')),
                           TextButton(onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => Recieve()),
-                            // );
-                          }, child: Text('내가 준 도움 기록')),
+                             Navigator.push(
+                               context,
+                               MaterialPageRoute(builder: (context) => GiveScreen(give: give, state: '준')),
+                             );
+                          }, child: Text('내가 준 도움 기록', style: TextStyle(color: Colors.black))),
                         ],
+                  ),
+                ),
+                Container(
+                  width: 240,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image(image: AssetImage('assets/tape.png')),
+                      TextButton(onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GiveScreen(give: receive, state: '받은')),
+                        );
+                      }, child: Text('내가 받은 도움 기록', style: TextStyle(color: Colors.black)),),
+                    ],
                   ),
                 ),
               ],
