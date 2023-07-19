@@ -172,7 +172,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     await _firestore.collection('users').doc(widget.helpUid).update({
       "give": FieldValue.arrayUnion([
         {
-          "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+          "postName": widget.chatRoom.name,
           "doneDate": doneDate
         }
       ])
@@ -181,7 +181,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     await _firestore.collection('users').doc(widget.snap["uid"]).update({
       "receive": FieldValue.arrayUnion([
         {
-          "postId": widget.snap['postId'] ?? widget.chatRoom.id,
+          "postName": widget.chatRoom.name,
           "doneDate": doneDate
         }
       ])

@@ -183,7 +183,7 @@ class _PostCardState extends State<PostCard> {
         await _firestore.collection('users').doc(helpUid).update({
           "give": FieldValue.arrayUnion([
             {
-              "postId": widget.snap['postId'],
+              "postName": widget.snap['title'],
               "doneDate": doneDate
             }
           ])
@@ -192,7 +192,7 @@ class _PostCardState extends State<PostCard> {
         await _firestore.collection('users').doc(widget.snap["uid"]).update({
           "receive": FieldValue.arrayUnion([
             {
-              "postId": widget.snap['postId'],
+              "postName": widget.snap['title'],
               "doneDate": doneDate
             }
           ])
